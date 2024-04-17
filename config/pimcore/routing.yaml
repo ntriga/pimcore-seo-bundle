@@ -1,0 +1,3 @@
+ntriga_pimcore_seo_homepage:
+    path:     /ntriga_pimcore_seo
+    defaults: { _controller: NtrigaPimcoreSeoBundle\Controller\DefaultController::indexAction }

@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    Ntriga\PimcoreSeoBundle\Registry\ResourceProcessorRegistryInterface: '@Ntriga\PimcoreSeoBundle\Registry\ResourceProcessorRegistry'
+    Ntriga\PimcoreSeoBundle\Registry\ResourceProcessorRegistry: ~

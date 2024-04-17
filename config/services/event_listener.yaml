@@ -1,0 +1,9 @@
+services:
+    _defaults:
+      autowire: true
+      autoconfigure: true
+      public: false
+
+    Ntriga\PimcoreSeoBundle\Admin\AssetListener:
+        tags:
+          - { name: kernel.event_subscriber }

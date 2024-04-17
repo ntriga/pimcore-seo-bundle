@@ -1,0 +1,36 @@
+{
+    "name": "ntriga/pimcore-seo-bundle",
+    "type": "pimcore-bundle",
+    "license": "GPL-3.0-or-later",
+    "description": "Pimcore SEO Enrichment Bundle",
+    "keywords": ["pimcore", "seo"],
+    "homepage": "https://github.com/ntriga/pimcore-seo-bundle",
+    "authors": [
+        {
+            "name": "Joey Daems",
+            "email": "joey@ntriga.be",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ntriga\\PimcoreSeoBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "extra": {
+        "pimcore": {
+            "bundles": [
+                "NtrigaPimcoreSeoBundle\\NtrigaPimcoreSeoBundle"
+            ]
+        }
+    },
+    "require": {
+        "pimcore/pimcore": "^11.0",
+        "doctrine/orm": "^2.7"
+    }
+}
