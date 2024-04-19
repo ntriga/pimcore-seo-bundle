@@ -35,7 +35,7 @@ class NtrigaPimcoreSeoBundle extends AbstractPimcoreBundle
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 [$this->getNamespacePath() => $this->getNamespaceName()],
-                ['pimcore-seo.persistence.doctrine.manager'],
+                ['seo.persistence.doctrine.manager'],
                 'pimcore-seo.persistence.doctrine.enabled'
             )
         );

@@ -16,18 +16,19 @@ class AssetListener implements EventSubscriberInterface
         ];
     }
 
-    public function addCssFiles(PathsEvent $event)
+    public function addCssFiles(PathsEvent $event): void
     {
         $event->addPaths([
             '/bundles/ntrigapimcoreseo/css/admin.css'
         ]);
     }
 
-    public function addJsFields(PathsEvent $event)
+    public function addJsFiles(PathsEvent $event): void
     {
         $event->addPaths([
-            '/bundles/ntrigapimcoreseo/js/pimcore/plugin.js',
-            '/bundles/ntrigapimcoreseo/js/pimcore/startup.js'
+            '/bundles/ntrigapimcoreseo/js/plugin.js',
+            '/bundles/ntrigapimcoreseo/js/metaData/abstractMetaDataPanel.js',
+            '/bundles/ntrigapimcoreseo/js/metaData/documentMetaDataPanel.js',
         ]);
     }
 }

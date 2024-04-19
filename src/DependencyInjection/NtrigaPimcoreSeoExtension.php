@@ -26,20 +26,45 @@ class NtrigaPimcoreSeoExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.yaml');
 
-//        $this->validateConfiguration($config);
+        $this->validateConfiguration($config);
 
-//        $persistenceConfig = $config['persistence']['doctrine'];
-//        $entityManagerName = $persistenceConfig['entity_manager'];
-//
-//        $enabledWorkerNames = [];
-//        foreach ($config['index_provider_configuration']['enabled_worker'] as $enabledWorker){
-//            $enabledWorkerNames[] = $enabledWorker['worker_name'];
-//            $container->setParameter(sprintf('seo.index.worker.config.%s', $enabledWorker['worker_name']), $enabledWorker['worker_config']);
-//        }
+        $persistenceConfig = $config['persistence']['doctrine'];
+        $entityManagerName = $persistenceConfig['entity_manager'];
 
-//        $container->setParameter('pimcore-seo.persistence.doctrine.enabled', true);
-//        $container->setParameter('pimcore-seo.persistence.doctrine.manager', $entityManagerName);
+        $enabledWorkerNames = [];
+        foreach ($config['index_provider_configuration']['enabled_worker'] as $enabledWorker){
+            $enabledWorkerNames[] = $enabledWorker['worker_name'];
+            $container->setParameter(sprintf('seo.index.worker.config.%s', $enabledWorker['worker_name']), $enabledWorker['worker_config']);
+        }
 
+        $container->setParameter('seo.persistence.doctrine.enabled', true);
+        $container->setParameter('seo.persistence.doctrine.manager', $entityManagerName);
+        $container->setParameter('seo.index.worker.enabled', $enabledWorkerNames);
+        $container->setParameter('seo.meta_data_provider.configuration', $config['meta_data_configuration']['meta_data_provider']);
+        $container->setParameter('seo.meta_data_integrator.configuration', $config['meta_data_configuration']['meta_data_integrator']);
+        $container->setParameter('seo.index.pimcore_element_watcher.enabled', $config['index_provider_configuration']['pimcore_element_watcher']['enabled']);
+
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $configs = $container->getExtensionConfig($this->getAlias());
+
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+
+        $enabledThirdPartyConfigs = [];
+
+        $pimcoreSeoBundleEnabled = $container->hasExtension('pimcore_seo');
+
+        if ($pimcoreSeoBundleEnabled){
+            $enabledThirdPartyConfigs['pimcore_seo'] = 'services/third_party/pimcore_seo.yaml';
+        }
+
+        foreach ($enabledThirdPartyConfigs as $enabledThirdPartyConfig){
+            $loader->load($enabledThirdPartyConfig);
+        }
+
+        $container->setParameter('seo.third_party.enabled', array_keys($enabledThirdPartyConfigs));
     }
 
     private function validateConfiguration(array $config){

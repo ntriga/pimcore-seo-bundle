@@ -1,3 +1,4 @@
-ntriga_pimcore_seo_homepage:
-    path:     /ntriga_pimcore_seo
-    defaults: { _controller: NtrigaPimcoreSeoBundle\Controller\DefaultController::indexAction }
+# Admin routes
+NtrigaSeo.controller.admin.meta-data.get_meta_data_definitions:
+  path: /admin/ntrigaseo/meta-data/get-meta-data-definitions
+  defaults: { _controller: Ntriga\PimcoreSeoBundle\Controller\Admin\MetaDataController::getMetaDataDefinitionsAction }

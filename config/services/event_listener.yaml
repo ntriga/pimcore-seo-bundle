@@ -4,6 +4,6 @@ services:
       autoconfigure: true
       public: false
 
-    Ntriga\PimcoreSeoBundle\Admin\AssetListener:
+    Ntriga\PimcoreSeoBundle\EventListener\Admin\AssetListener:
         tags:
           - { name: kernel.event_subscriber }

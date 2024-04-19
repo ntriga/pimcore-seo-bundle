@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Ntriga\PimcoreSeoBundle\Registry\MetaDataIntegratorRegistryInterface: '@Ntriga\PimcoreSeoBundle\Registry\MetaDataIntegratorRegistry'
+    Ntriga\PimcoreSeoBundle\Registry\MetaDataIntegratorRegistry: ~
+
+    Ntriga\PimcoreSeoBundle\Manager\ElementMetaDataManagerInterface: '@Ntriga\PimcoreSeoBundle\Manager\ElementMetaDataManager'
+    Ntriga\PimcoreSeoBundle\Manager\ElementMetaDataManager:
+        arguments:
+            $integratorConfiguration: '%seo.meta_data_integrator.configuration%'
