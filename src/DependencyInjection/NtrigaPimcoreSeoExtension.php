@@ -17,6 +17,7 @@ class NtrigaPimcoreSeoExtension extends Extension
 {
     /**
      * {@inheritdoc}
+     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -46,10 +47,11 @@ class NtrigaPimcoreSeoExtension extends Extension
 
     }
 
+    /**
+     * @throws \Exception
+     */
     public function prepend(ContainerBuilder $container): void
     {
-        $configs = $container->getExtensionConfig($this->getAlias());
-
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
 
         $enabledThirdPartyConfigs = [];
@@ -67,7 +69,8 @@ class NtrigaPimcoreSeoExtension extends Extension
         $container->setParameter('seo.third_party.enabled', array_keys($enabledThirdPartyConfigs));
     }
 
-    private function validateConfiguration(array $config){
+    private function validateConfiguration(array $config): void
+    {
         $enabledIntegrators = [];
         foreach ($config['meta_data_configuration']['meta_data_integrator']['enabled_integrator'] as $dataIntegrator){
             if (in_array($dataIntegrator['integrator_name'], $enabledIntegrators, true)) {

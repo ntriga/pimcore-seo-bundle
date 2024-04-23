@@ -1,0 +1,9 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Ntriga\PimcoreSeoBundle\Middleware\MiddlewareDispatcherInterface: '@Ntriga\PimcoreSeoBundle\Middleware\MiddlewareDispatcher'
+    Ntriga\PimcoreSeoBundle\Middleware\MiddlewareDispatcher: ~

@@ -1,0 +1,15 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Ntriga\PimcoreSeoBundle\Registry\MetaDataExtractorRegistryInterface: '@Ntriga\PimcoreSeoBundle\Registry\MetaDataExtractorRegistry'
+    Ntriga\PimcoreSeoBundle\Registry\MetaDataExtractorRegistry: ~
+
+    Ntriga\PimcoreSeoBundle\MetaData\Extractor\IntegratorExtractor:
+        arguments:
+            $integratorConfiguration: '%seo.meta_data_integrator.configuration%'
+        tags:
+            - {name: seo.meta_data.extractor, identifier: integrator, priority: -255}

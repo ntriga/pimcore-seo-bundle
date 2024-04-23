@@ -16,7 +16,7 @@ class ResourceProcessorPass implements CompilerPassInterface
         $services = [];
         $definition = $container->getDefinition(ResourceProcessorRegistry::class);
 
-        foreach ($container->findTaggedServiceIds('pimcore-seo.index.resource_processor', true) as $serviceId => $attributes){
+        foreach ($container->findTaggedServiceIds('seo.index.resource_processor', true) as $serviceId => $attributes){
             foreach ($attributes as $attribute){
                 $priority = $attribute['priority'] ?? 0;
                 $services[] = [$priority, ++$i, $serviceId, $attribute];

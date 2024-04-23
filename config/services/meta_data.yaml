@@ -1,0 +1,9 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Ntriga\PimcoreSeoBundle\MetaData\MetaDataProviderInterface: '@Ntriga\PimcoreSeoBundle\MetaData\MetaDataProvider'
+    Ntriga\PimcoreSeoBundle\MetaData\MetaDataProvider: ~

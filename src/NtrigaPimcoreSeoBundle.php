@@ -4,8 +4,8 @@ namespace Ntriga\PimcoreSeoBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Ntriga\PimcoreSeoBundle\DependencyInjection\Compiler\ResourceProcessorPass;
+use Ntriga\PimcoreSeoBundle\Tool\Install;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\Extension\Bundle\PimcoreBundleAdminClassicInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -13,10 +13,17 @@ class NtrigaPimcoreSeoBundle extends AbstractPimcoreBundle
 {
     use PackageVersionTrait;
 
+    public function getInstaller(): Install
+    {
+        return $this->container->get(Install::class);
+    }
+
     public const PACKAGE_NAME = 'ntriga/pimcore-seo-bundle';
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
+        $this->configureDoctrineExtension($container);
+
         $container->addCompilerPass(new ResourceProcessorPass());
     }
 
@@ -36,7 +43,7 @@ class NtrigaPimcoreSeoBundle extends AbstractPimcoreBundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 [$this->getNamespacePath() => $this->getNamespaceName()],
                 ['seo.persistence.doctrine.manager'],
-                'pimcore-seo.persistence.doctrine.enabled'
+                'seo.persistence.doctrine.enabled'
             )
         );
     }

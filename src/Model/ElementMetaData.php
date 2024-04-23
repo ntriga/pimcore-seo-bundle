@@ -2,6 +2,7 @@
 
 namespace Ntriga\PimcoreSeoBundle\Model;
 
+
 class ElementMetaData implements ElementMetaDataInterface
 {
     protected ?int $id = null;

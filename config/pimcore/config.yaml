@@ -7,4 +7,4 @@ doctrine:
 
 doctrine_migrations:
     migrations_paths:
-        'Ntriga\PimcoreSeoBundle\Migrations': '@PimcoreSeoBundle/src/Migrations'
+        'Ntriga\PimcoreSeoBundle\Migrations': '@NtrigaPimcoreSeoBundle/src/Migrations'
