@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('seo');
+        $treeBuilder = new TreeBuilder('ntriga_pimcore_seo');
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode->append($this->createIndexProviderConfigurationNode());
@@ -81,14 +81,14 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('documents')
                             ->addDefaultsIfNotSet()
                             ->children()
-                                ->booleanNode('enabled')->defaultTrue()->end()
+                                ->booleanNode('enabled')->defaultFalse()->end()
                                 ->booleanNode('hide_pimcore_default_seo_panel')->defaultTrue()->end()
                             ->end()
                         ->end()
                     ->arrayNode('objects')
                         ->addDefaultsIfNotSet()
                         ->children()
-                            ->booleanNode('enabled')->defaultTrue()->end()
+                            ->booleanNode('enabled')->defaultFalse()->end()
                             ->arrayNode('data_classes')
                                 ->prototype('scalar')->end()
                             ->end()

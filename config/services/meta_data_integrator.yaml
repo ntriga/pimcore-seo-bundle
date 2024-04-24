@@ -11,3 +11,7 @@ services:
     Ntriga\PimcoreSeoBundle\Manager\ElementMetaDataManager:
         arguments:
             $integratorConfiguration: '%seo.meta_data_integrator.configuration%'
+
+    Ntriga\PimcoreSeoBundle\MetaData\Integrator\TitleDescriptionIntegrator:
+        tags:
+            - {name: seo.meta_data.integrator, identifier: title_description}

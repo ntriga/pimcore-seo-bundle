@@ -13,6 +13,7 @@ NtrigaSeo.MetaData.DocumentMetaDataPanel = Class.create(NtrigaSeo.MetaData.Abstr
         }
 
         this.buildSeoMetaDataTab();
+        this.generateMetaDataFields();
     },
 
     getElementType: function (){
@@ -23,10 +24,14 @@ NtrigaSeo.MetaData.DocumentMetaDataPanel = Class.create(NtrigaSeo.MetaData.Abstr
         return this.getElement().id
     },
 
+    generateMetaDataFields: function () {
+        // tbd
+    },
+
     tweakPimcoreDefaultSeoPanel: function () {
         let tabPanels, tabPanel;
 
-        tabPanels = this.getElement().tab.query()('tabpanel');
+        tabPanels = this.getElement().tab.query('tabpanel');
         if (tabPanels.length === 0){
             return;
         }

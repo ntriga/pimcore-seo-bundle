@@ -32,6 +32,7 @@ class ElementMetaDataManager implements ElementMetaDataManagerInterface
         foreach ($this->integratorConfiguration['enabled_integrator'] as $enabledIntegrator){
             $enabledIntegratorName = $enabledIntegrator['integrator_name'];
             $metaDataIntegrator = $this->metaDataIntegratorRegistry->has($enabledIntegratorName) ? $this->metaDataIntegratorRegistry->get($enabledIntegratorName) : null;
+            dd($metaDataIntegrator);
             $config = $metaDataIntegrator === null ? [] : $metaDataIntegrator->getBackendConfiguration($correspondingElement);
             $configuration[$enabledIntegratorName] = $config;
         }
@@ -43,6 +44,7 @@ class ElementMetaDataManager implements ElementMetaDataManagerInterface
     {
         $elementValues = $this->elementMetaDataRepository->findAll($elementType, $elementId);
 
+
         return $this->checkForLegacyData($elementValues, $elementType, $elementId);
     }
 
@@ -53,6 +55,7 @@ class ElementMetaDataManager implements ElementMetaDataManagerInterface
     {
         $parsedData = [];
         $data = $this->getElementData($elementType, $elementId);
+
 
         foreach ($data as $element){
             $metaDataIntegrator = $this->metaDataIntegratorRegistry->get($element->getIntegrator());
@@ -120,6 +123,7 @@ class ElementMetaDataManager implements ElementMetaDataManagerInterface
         // we'll never check the document again. It's all about performance.
 
         if (count($elements) > 0){
+
             return $elements;
         }
 
@@ -128,9 +132,10 @@ class ElementMetaDataManager implements ElementMetaDataManagerInterface
         }
 
         $legacyData = $this->getDocumentLegacyData($elementId);
-        if ($legacyData !== null){
+        if ($legacyData === null){
             return $elements;
         }
+
 
         if ($legacyData['hasTitleDescriptionIntegrator'] === true){
             $legacyTitleDescription = new ElementMetaData();

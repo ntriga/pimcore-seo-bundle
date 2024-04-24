@@ -25,7 +25,7 @@ class NtrigaSeoCore {
                 const resp = Ext.decode(response.responseText);
 
                 this.ready = true;
-                this.configuration = true;
+                this.configuration = resp.configuration;
             }.bind(this)
         });
     }
@@ -45,12 +45,12 @@ class NtrigaSeoCore {
     }
 
     processElement(obj, type){
-        // if (type === 'page' && this.configuration.documents.enabled === true && ['page'].indexOf(obj.type) !== -1){
+        console.log(this.configuration.documents);
+        if (type === 'page' && this.configuration.documents.enabled === true && ['page'].indexOf(obj.type) !== -1){
             obj.seoPanel = new NtrigaSeo.MetaData.DocumentMetaDataPanel(obj, this.configuration);
-            // obj.seoPanel.setup(type, this.configuration.documents.hide_pimcore_default_seo_panel);
-            obj.seoPanel.setup(type, 'false');
+            obj.seoPanel.setup(type, this.configuration.documents.hide_pimcore_default_seo_panel);
 
-        // }
+        }
     }
 }
 

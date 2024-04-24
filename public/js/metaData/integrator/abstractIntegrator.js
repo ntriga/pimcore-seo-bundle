@@ -1,5 +1,5 @@
-pimcore.registerNS('PimcoreSeo.MetaData.Integrator.AbstractIntegrator');
-PimcoreSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
+pimcore.registerNS('NtrigaSeo.MetaData.Integrator.AbstractIntegrator');
+NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
 
     fieldSetTitle: 'Abstract Integrator',
     iconClass: false,
@@ -30,6 +30,9 @@ PimcoreSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
         this.data = data;
         this.renderAsTab = renderAsTab;
         // this.delayedRefreshTask = new Ext.util.DelayedTask(this.refreshLivePreview.bind(this));
+
+        console.log('CONFIG');
+        console.log(this.configuration);
     },
 
     getType: function () {

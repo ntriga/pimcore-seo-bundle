@@ -25,10 +25,11 @@ class MetaDataController extends AdminAbstractController
         ]);
     }
 
+
     /**
      * @throws \Exception
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function getElementMetaDataConfigurationAction(Request $request): JsonResponse
     {
@@ -46,7 +47,9 @@ class MetaDataController extends AdminAbstractController
         }
 
         $configuration = $this->elementMetaDataManager->getMetaDataIntegratorBackendConfiguration($element);
+        dd($configuration);
         $data = $this->elementMetaDataManager->getElementDataForBackend($elementType, $elementId);
+
 
         return $this->adminJson([
             'success' => true,
