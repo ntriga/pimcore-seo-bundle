@@ -3,6 +3,7 @@
 namespace Ntriga\PimcoreSeoBundle\MetaData\Integrator;
 
 use Ntriga\PimcoreSeoBundle\Model\SeoMetaDataInterface;
+use Ntriga\PimcoreSeoBundle\Tool\UrlGenerator;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Document;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,6 +11,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterface
 {
     protected array $configuration;
+    protected UrlGenerator $urlGenerator;
+
+    public function __construct(UrlGenerator $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
 
     public function getBackendConfiguration(mixed $element): array
     {
@@ -26,7 +33,7 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
     private function getDefaultCanonical(mixed $element): ?string
     {
         if ($element instanceof Document){
-            return $element->getFullPath();
+            return $this->urlGenerator->generate($element);
         }
 
         return null;

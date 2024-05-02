@@ -45,12 +45,11 @@ NtrigaSeo.MetaData.Integrator.CanonicalIntegrator = Class.create(NtrigaSeo.MetaD
 
         return [
             {
-                xtype: 'textarea',
-                fieldLabel: t('seo_bundle.integrator.title_description.single_title'),
+                xtype: 'textfield',
+                fieldLabel: t('seo_bundle.integrator.canonical.title'),
                 name: 'canonical',
                 itemId: 'canonical',
                 maxLength: 255,
-                height: 60,
                 value: canonicalValue,
             }
         ]
