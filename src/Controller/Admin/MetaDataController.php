@@ -47,7 +47,6 @@ class MetaDataController extends AdminAbstractController
         }
 
         $configuration = $this->elementMetaDataManager->getMetaDataIntegratorBackendConfiguration($element);
-        dd($configuration);
         $data = $this->elementMetaDataManager->getElementDataForBackend($elementType, $elementId);
 
 
@@ -57,6 +56,27 @@ class MetaDataController extends AdminAbstractController
             'availableLocales' => $availableLocales,
             'configuration' => $configuration
         ]);
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    public function setElementMetaDataConfigurationAction(Request $request): JsonResponse
+    {
+        $elementId = (int) $request->request->get('elementId', 0);
+        $elementType = $request->get('elementType');
+        $integratorValues = json_decode($request->request->get('integratorValues'), true, 512, JSON_THROW_ON_ERROR);
+
+        if (!is_array($integratorValues)){
+            return $this->adminJson(['success' => true]);
+        }
+
+        foreach ($integratorValues as $integratorName => $integratorData){
+            $sanitizedData = is_array($integratorData) ? $integratorData : [];
+            $this->elementMetaDataManager->saveElementData($elementType, $elementId, $integratorName, $sanitizedData);
+        }
+
+        return $this->adminJson(['success' => true]);
     }
 
 

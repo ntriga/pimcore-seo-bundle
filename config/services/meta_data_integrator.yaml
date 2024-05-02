@@ -15,3 +15,15 @@ services:
     Ntriga\PimcoreSeoBundle\MetaData\Integrator\TitleDescriptionIntegrator:
         tags:
             - {name: seo.meta_data.integrator, identifier: title_description}
+
+    Ntriga\PimcoreSeoBundle\MetaData\Integrator\OpenGraphIntegrator:
+        tags:
+            - { name: seo.meta_data.integrator, identifier: open_graph }
+
+    Ntriga\PimcoreSeoBundle\MetaData\Integrator\SchemaIntegrator:
+        tags:
+            - { name: seo.meta_data.integrator, identifier: schema }
+
+    Ntriga\PimcoreSeoBundle\MetaData\Integrator\CanonicalIntegrator:
+        tags:
+            - { name: seo.meta_data.integrator, identifier: canonical }

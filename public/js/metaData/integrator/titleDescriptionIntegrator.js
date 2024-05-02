@@ -41,8 +41,6 @@ NtrigaSeo.MetaData.Integrator.TitleDescriptionIntegrator = Class.create(NtrigaSe
         let configuration = this.getConfiguration(),
             lfExtension, params;
 
-        console.log(typeof configuration);
-
         this.integratorValueFetcher = new NtrigaSeo.MetaData.Extension.IntegratorValueFetcher();
 
         // this.fieldSet.on('afterrender', this.refreshLivePreview.bind(this));

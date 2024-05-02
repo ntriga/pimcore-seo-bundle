@@ -20,6 +20,10 @@ interface SeoMetaDataInterface
 
     public function getTitle(): string;
 
+    public function setCanonicalUrl(string $url): void;
+
+    public function getCanonicalUrl(): string;
+
     public function setExtraProperties(array|\Traversable $extraProperties): void;
 
     public function setExtraNames(array|\Traversable $extraNames): void;

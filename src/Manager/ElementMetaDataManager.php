@@ -25,6 +25,9 @@ class ElementMetaDataManager implements ElementMetaDataManagerInterface
         return $this->integratorConfiguration;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getMetaDataIntegratorBackendConfiguration(mixed $correspondingElement): array
     {
         $configuration = [];
@@ -32,7 +35,6 @@ class ElementMetaDataManager implements ElementMetaDataManagerInterface
         foreach ($this->integratorConfiguration['enabled_integrator'] as $enabledIntegrator){
             $enabledIntegratorName = $enabledIntegrator['integrator_name'];
             $metaDataIntegrator = $this->metaDataIntegratorRegistry->has($enabledIntegratorName) ? $this->metaDataIntegratorRegistry->get($enabledIntegratorName) : null;
-            dd($metaDataIntegrator);
             $config = $metaDataIntegrator === null ? [] : $metaDataIntegrator->getBackendConfiguration($correspondingElement);
             $configuration[$enabledIntegratorName] = $config;
         }

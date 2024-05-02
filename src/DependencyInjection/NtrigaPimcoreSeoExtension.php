@@ -5,6 +5,7 @@ namespace Ntriga\PimcoreSeoBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -24,7 +25,7 @@ class NtrigaPimcoreSeoExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        $loader = new YamlFileLoader($container, new FileLocator([__DIR__ . '/../../config']));
         $loader->load('services.yaml');
 
         $this->validateConfiguration($config);
@@ -33,7 +34,7 @@ class NtrigaPimcoreSeoExtension extends Extension
         $entityManagerName = $persistenceConfig['entity_manager'];
 
         $enabledWorkerNames = [];
-        foreach ($config['index_provider_configuration']['enabled_worker'] as $enabledWorker){
+        foreach ($config['index_provider_configuration']['enabled_worker'] as $enabledWorker) {
             $enabledWorkerNames[] = $enabledWorker['worker_name'];
             $container->setParameter(sprintf('seo.index.worker.config.%s', $enabledWorker['worker_name']), $enabledWorker['worker_config']);
         }
@@ -72,7 +73,7 @@ class NtrigaPimcoreSeoExtension extends Extension
     private function validateConfiguration(array $config): void
     {
         $enabledIntegrators = [];
-        foreach ($config['meta_data_configuration']['meta_data_integrator']['enabled_integrator'] as $dataIntegrator){
+        foreach ($config['meta_data_configuration']['meta_data_integrator']['enabled_integrator'] as $dataIntegrator) {
             if (in_array($dataIntegrator['integrator_name'], $enabledIntegrators, true)) {
                 throw new InvalidConfigurationException(sprintf('Meta data integrator "%s" already has been added', $dataIntegrator['integrator_name']));
             }

@@ -51,7 +51,7 @@ NtrigaSeo.MetaData.AbstractMetaDataPanel = Class.create({
 
     loadElementMetaData: function () {
         Ext.Ajax.request({
-            url: '/admin/seo/meta-data/get-element-meta-data-configuration',
+            url: '/admin/ntrigaseo/meta-data/get-element-meta-data-configuration',
             params: {
                 elementType: this.getElementType(),
                 elementId: this.getElementId()
@@ -72,9 +72,6 @@ NtrigaSeo.MetaData.AbstractMetaDataPanel = Class.create({
 
     buildMetaDataIntegrator: function (data, configuration, availableLocales) {
 
-        console.log('BLA');
-        console.log(configuration);
-
         Ext.Array.each(this.configuration.enabled_integrator, function (integrator) {
             let integratorClass,
                 integratorName = integrator['integrator_name'],
@@ -84,7 +81,6 @@ NtrigaSeo.MetaData.AbstractMetaDataPanel = Class.create({
 
             if (NtrigaSeo.MetaData.Integrator.hasOwnProperty(integratorClassName)){
                 integratorClass = new NtrigaSeo.MetaData.Integrator[integratorClassName](this.getElementType(), this.getElementId(), integratorName, integratorConfiguration, availableLocales, integratorData, this.renderAsTab);
-                console.log(integratorConfiguration);
                 this.integrator.push(integratorClass);
                 this[this.renderAsTab === true ? 'tabPanel' : 'layout'].add(integratorClass.buildLayout());
             } else{
@@ -98,10 +94,32 @@ NtrigaSeo.MetaData.AbstractMetaDataPanel = Class.create({
     },
 
     save: function () {
-        console.log('SAVE');
+        const integratorValues = this.getIntegratorValues();
+
+        console.log('integrator values', integratorValues);
+
+        Ext.Ajax.request({
+            url: '/admin/ntrigaseo/meta-data/set-element-meta-data-configuration',
+            method: 'POST',
+            params: {
+                integratorValues: Ext.encode(integratorValues),
+                elementType: this.getElementType(),
+                elementId: this.getElementId(),
+            },
+            success: function (response) {
+                const resp = Ext.decode(response.responseText);
+                if (resp.success === false){
+                    Ext.Msg.alert('error', resp.message);
+                }
+            },
+            failure: function (resp) {
+                Ext.Msg.alert('error', t('seo_bundle.panel.error_save_data'));
+            }
+        });
     },
 
     getIntegratorValues: function () {
+
         let values = {};
         Ext.Array.each(this.integrator, function (integrator) {
             values[integrator.getType()] = integrator.getValues();

@@ -5,3 +5,6 @@ NtrigaSeo.controller.admin.meta-data.get_meta_data_definitions:
 NtrigaSeo.controller.admin.meta_data.get_element_meta_data_configuration:
   path: /admin/ntrigaseo/meta-data/get-element-meta-data-configuration
   defaults: { _controller: Ntriga\PimcoreSeoBundle\Controller\Admin\MetaDataController::getElementMetaDataConfigurationAction }
+NtrigaSeo.controller.admin.meta_data.set_element_meta_data_configuration:
+  path: /admin/ntrigaseo/meta-data/set-element-meta-data-configuration
+  defaults: { _controller: Ntriga\PimcoreSeoBundle\Controller\Admin\MetaDataController::setElementMetaDataConfigurationAction }

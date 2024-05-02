@@ -2,7 +2,7 @@
 
 namespace Ntriga\PimcoreSeoBundle\Worker;
 
-use SeoBundle\Model\QueueEntryInterface;
+use Ntriga\PimcoreSeoBundle\Model\QueueEntryInterface;
 
 interface WorkerResponseInterface
 {

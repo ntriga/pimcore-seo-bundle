@@ -1,0 +1,9 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Ntriga\PimcoreSeoBundle\Queue\QueueDataProcessorInterface: '@Ntriga\PimcoreSeoBundle\Queue\QueueDataProcessor'
+    Ntriga\PimcoreSeoBundle\Queue\QueueDataProcessor: ~

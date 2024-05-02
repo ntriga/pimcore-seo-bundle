@@ -1,0 +1,14 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Ntriga\PimcoreSeoBundle\Manager\QueueManagerInterface: '@Ntriga\PimcoreSeoBundle\Manager\QueueManager'
+    Ntriga\PimcoreSeoBundle\Manager\QueueManager:
+        arguments:
+            $enabledWorker: '%seo.index.worker.enabled%'
+
+    Ntriga\PimcoreSeoBundle\Registry\IndexWorkerRegistryInterface: '@Ntriga\PimcoreSeoBundle\Registry\IndexWorkerRegistry'
+    Ntriga\PimcoreSeoBundle\Registry\IndexWorkerRegistry: ~

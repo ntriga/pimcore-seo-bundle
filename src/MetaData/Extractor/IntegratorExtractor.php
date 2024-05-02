@@ -15,8 +15,11 @@ class IntegratorExtractor implements ExtractorInterface
     protected ElementMetaDataManagerInterface $elementMetaDataManager;
     protected MetaDataIntegratorRegistryInterface $metaDataIntegratorRegistry;
 
-    public function __construct(array $integratorConfiguration, ElementMetaDataManagerInterface $elementMetaDataManager, MetaDataIntegratorRegistryInterface $metaDataIntegratorRegistry)
-    {
+    public function __construct(
+        array $integratorConfiguration,
+        ElementMetaDataManagerInterface $elementMetaDataManager,
+        MetaDataIntegratorRegistryInterface $metaDataIntegratorRegistry
+    ) {
         $this->integratorConfiguration = $integratorConfiguration;
         $this->elementMetaDataManager = $elementMetaDataManager;
         $this->metaDataIntegratorRegistry = $metaDataIntegratorRegistry;
@@ -24,15 +27,15 @@ class IntegratorExtractor implements ExtractorInterface
 
     public function supports(mixed $element): bool
     {
-        if ($element instanceof Concrete){
-            if ($this->integratorConfiguration['objects']['enabled'] === false){
+        if ($element instanceof Concrete) {
+            if ($this->integratorConfiguration['objects']['enabled'] === false) {
                 return false;
             }
 
             return in_array($element->getClassName(), $this->integratorConfiguration['objects']['data_classes'], true);
         }
 
-        if ($element instanceof Page){
+        if ($element instanceof Page) {
             return $this->integratorConfiguration['documents']['enabled'] === true;
         }
 
@@ -44,24 +47,25 @@ class IntegratorExtractor implements ExtractorInterface
         $elementId = null;
         $elementType = null;
 
-        if ($element instanceof Concrete){
+        if ($element instanceof Concrete) {
             $elementId = $element->getId();
             $elementType = 'object';
-        } elseif ($element instanceof Document){
+        } elseif ($element instanceof Document) {
             $elementId = $element->getId();
             $elementType = 'document';
         }
 
-        if ($elementType === null || !$elementId){
+        if ($elementType === null || !$elementId) {
             return;
         }
 
         $elementMetaData = $this->elementMetaDataManager->getElementData($elementType, $elementId);
 
-        foreach ($elementMetaData as $elementMeta){
+        foreach ($elementMetaData as $elementMeta) {
             try {
                 $metaDataIntegrator = $this->metaDataIntegratorRegistry->get($elementMeta->getIntegrator());
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
+                // fail silently
                 continue;
             }
 

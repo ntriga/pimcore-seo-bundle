@@ -4,5 +4,8 @@ services:
         autoconfigure: true
         public: false
 
+    Ntriga\PimcoreSeoBundle\Repository\QueueEntryRepositoryInterface: '@Ntriga\PimcoreSeoBundle\Repository\QueueEntryRepository'
+    Ntriga\PimcoreSeoBundle\Repository\QueueEntryRepository: ~
+
     Ntriga\PimcoreSeoBundle\Repository\ElementMetaDataRepositoryInterface: '@Ntriga\PimcoreSeoBundle\Repository\ElementMetaDataRepository'
     Ntriga\PimcoreSeoBundle\Repository\ElementMetaDataRepository: ~

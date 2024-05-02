@@ -31,8 +31,14 @@ class AssetListener implements EventSubscriberInterface
             '/bundles/ntrigapimcoreseo/js/metaData/documentMetaDataPanel.js',
             '/bundles/ntrigapimcoreseo/js/metaData/integrator/abstractIntegrator.js',
             '/bundles/ntrigapimcoreseo/js/metaData/integrator/titleDescriptionIntegrator.js',
+            '/bundles/ntrigapimcoreseo/js/metaData/integrator/ogIntegrator.js',
+            '/bundles/ntrigapimcoreseo/js/metaData/integrator/schemaIntegrator.js',
+            '/bundles/ntrigapimcoreseo/js/metaData/integrator/canonicalIntegrator.js',
             '/bundles/ntrigapimcoreseo/js/metaData/extension/integratorValueFetcher.js',
             '/bundles/ntrigapimcoreseo/js/metaData/extension/localizedFieldExtension.js',
+            '/bundles/ntrigapimcoreseo/js/metaData/extension/hrefFieldExtension.js',
+            '/bundles/ntrigapimcoreseo/js/metaData/components/seoHrefTextField.js',
+
         ]);
     }
 }

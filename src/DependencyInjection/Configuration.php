@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('ntriga_pimcore_seo');
+        $treeBuilder = new TreeBuilder('seo');
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode->append($this->createIndexProviderConfigurationNode());

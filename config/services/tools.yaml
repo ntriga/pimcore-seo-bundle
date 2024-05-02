@@ -4,5 +4,8 @@ services:
         autoconfigure: true
         public: false
 
+    Ntriga\PimcoreSeoBundle\Tool\UrlGeneratorInterface: '@Ntriga\PimcoreSeoBundle\Tool\UrlGenerator'
+    Ntriga\PimcoreSeoBundle\Tool\UrlGenerator: ~
+
     Ntriga\PimcoreSeoBundle\Tool\LocaleProviderInterface: '@Ntriga\PimcoreSeoBundle\Tool\LocaleProvider'
     Ntriga\PimcoreSeoBundle\Tool\LocaleProvider: ~

@@ -13,6 +13,9 @@ class ArrayHelper
         $newData = $previousData;
 
         foreach ($data as $row){
+
+            dd($row);
+
             $previousRowIndex = array_search($row[$rowIdentifier], array_column($previousData, $rowIdentifier), true);
 
             if($previousRowIndex === false){

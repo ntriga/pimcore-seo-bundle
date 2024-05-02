@@ -3,3 +3,7 @@ services:
       autowire: true
       autoconfigure: true
       public: false
+
+    Ntriga\PimcoreSeoBundle\Twig\Extension\SeoExtension:
+        tags:
+          - { name: twig.extension }

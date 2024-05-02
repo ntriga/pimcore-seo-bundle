@@ -11,3 +11,15 @@ services:
     Ntriga\PimcoreSeoBundle\EventListener\ElementMetaDataListener:
         tags:
             - { name: kernel.event_subscriber }
+
+    Ntriga\PimcoreSeoBundle\EventListener\AutoMetaDataAttachListener:
+        arguments:
+            $configuration: '%seo.meta_data_provider.configuration%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Ntriga\PimcoreSeoBundle\EventListener\PimcoreElementListener:
+        arguments:
+            $enabled: '%seo.index.pimcore_element_watcher.enabled%'
+        tags:
+            - { name: kernel.event_subscriber }

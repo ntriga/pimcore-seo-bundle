@@ -3,6 +3,9 @@
 namespace Ntriga\PimcoreSeoBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Ntriga\PimcoreSeoBundle\DependencyInjection\Compiler\MetaDataExtractorPass;
+use Ntriga\PimcoreSeoBundle\DependencyInjection\Compiler\MetaDataIntegratorPass;
+use Ntriga\PimcoreSeoBundle\DependencyInjection\Compiler\MetaMiddlewareAdapterPass;
 use Ntriga\PimcoreSeoBundle\DependencyInjection\Compiler\ResourceProcessorPass;
 use Ntriga\PimcoreSeoBundle\Tool\Install;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
@@ -25,6 +28,9 @@ class NtrigaPimcoreSeoBundle extends AbstractPimcoreBundle
         $this->configureDoctrineExtension($container);
 
         $container->addCompilerPass(new ResourceProcessorPass());
+        $container->addCompilerPass(new MetaDataIntegratorPass());
+        $container->addCompilerPass(new MetaDataExtractorPass());
+        $container->addCompilerPass(new MetaMiddlewareAdapterPass());
     }
 
     public function getPath(): string

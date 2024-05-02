@@ -21,11 +21,10 @@ class MetaDataIntegratorPass implements CompilerPassInterface
         $integratorConfiguration = $container->getParameter('seo.meta_data_integrator.configuration');
 
         $definition = $container->getDefinition(MetaDataIntegratorRegistry::class);
-
-        foreach ($container->findTaggedServiceIds('seo.meta_data.integrator', true) as $id => $tags){
-            foreach ($tags as $attributes){
-                if (!isset($attributes['identifier'])){
-                    throw new InvalidArgumentException(sprintf('Attribute "identifier" missing for meta data integrator "%s".', $id));
+        foreach ($container->findTaggedServiceIds('seo.meta_data.integrator', true) as $id => $tags) {
+            foreach ($tags as $attributes) {
+                if (!isset($attributes['identifier'])) {
+                    throw new \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException(sprintf('Attribute "identifier" missing for meta data integrator "%s".', $id));
                 }
 
                 $definition->addMethodCall('register', [new Reference($id), $attributes['identifier']]);
@@ -40,15 +39,15 @@ class MetaDataIntegratorPass implements CompilerPassInterface
     public function setDefinitionConfiguration(string $identifier, array $integratorConfiguration, Definition $definition): void
     {
         $integratorConfig = null;
-        foreach ($integratorConfiguration['enabled_integrator'] as $enabledIntegrator){
-            if ($enabledIntegrator['integrator_name'] === $identifier){
+        foreach ($integratorConfiguration['enabled_integrator'] as $enabledIntegrator) {
+            if ($enabledIntegrator['integrator_name'] === $identifier) {
                 $integratorConfig = $enabledIntegrator['integrator_config'];
 
                 break;
             }
         }
 
-        if ($integratorConfig === null){
+        if ($integratorConfig === null) {
             return;
         }
 
@@ -59,7 +58,7 @@ class MetaDataIntegratorPass implements CompilerPassInterface
 
         try {
             $resolvedOptions = $options->resolve($integratorConfig);
-        } catch (\Throwable $e){
+        } catch (\Throwable $e) {
             throw new \Exception(sprintf('Invalid "%s" meta data integrator options. %s', $identifier, $e->getMessage()));
         }
 

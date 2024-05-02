@@ -2,7 +2,7 @@
 
 namespace Ntriga\PimcoreSeoBundle\Registry;
 
-use Symfony\Component\Translation\Extractor\ExtractorInterface;
+use Ntriga\PimcoreSeoBundle\MetaData\Extractor\ExtractorInterface;
 
 interface MetaDataExtractorRegistryInterface
 {

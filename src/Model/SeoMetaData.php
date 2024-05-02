@@ -13,10 +13,16 @@ class SeoMetaData implements SeoMetaDataInterface
     private string $originalUrl;
     private string $metaDescription = '';
     private string $title = '';
+    private string $canonicalUrl = '';
     private array $extraProperties = [];
     private array $extraNames = [];
     private array $extraHttp = [];
     private array $schema = [];
+
+    /**
+     * @deprecated
+     */
+    private array $raw = [];
 
     public function __construct(MiddlewareDispatcherInterface $middlewareDispatcher)
     {
@@ -69,6 +75,22 @@ class SeoMetaData implements SeoMetaDataInterface
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCanonicalUrl(): string
+    {
+        return $this->canonicalUrl;
+    }
+
+    /**
+     * @param string $canonicalUrl
+     */
+    public function setCanonicalUrl(string $url): void
+    {
+        $this->canonicalUrl = $url;
     }
 
     public function setExtraProperties(array|\Traversable $extraProperties): void

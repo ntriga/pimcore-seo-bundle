@@ -31,8 +31,6 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
         this.renderAsTab = renderAsTab;
         // this.delayedRefreshTask = new Ext.util.DelayedTask(this.refreshLivePreview.bind(this));
 
-        console.log('CONFIG');
-        console.log(this.configuration);
     },
 
     getType: function () {
@@ -132,8 +130,11 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
         this.fieldSet = new Ext.form[this.renderAsTab ? 'Panel' : 'FieldSet']({
             title: this.renderAsTab ? false : this.fieldSetTitle,
             iconCls: this.renderAsTab ? false : this.iconClass,
-            layout: 'hbox',
-            collapsible: !this.renderAsTab ? false : this.isCollapsed(),
+            layout: {
+                type: 'hbox'
+            },
+            collapsible: !this.renderAsTab,
+            collapsed: this.renderAsTab ? false : this.isCollapsed(),
             defaults: {
                 labelWidth: 200
             }
@@ -155,10 +156,10 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
 
         this.formPanel.add(this.fieldSet);
         this.formPanel.on('destroy', function () {
-            this.isInShutdownMode = true;
+            this.isInShutDownMode = true;
         }.bind(this));
 
-      return this.formPanel;
+        return this.formPanel;
     },
 
 
