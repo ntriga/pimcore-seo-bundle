@@ -24,7 +24,7 @@ class IndexIntegrator extends AbstractIntegrator implements IntegratorInterface
         return $data;
     }
 
-    public function updateMetaData(mixed $element, array $data, ?string $locale, SeoMetaDataInterface $seoMetaData)
+    public function updateMetaData(mixed $element, array $data, ?string $locale, SeoMetaDataInterface $seoMetaData): void
     {
         if (!empty($data['index'])) {
             $seoMetaData->setIndexPage(false);

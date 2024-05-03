@@ -4,21 +4,24 @@ namespace Ntriga\PimcoreSeoBundle\Helper;
 
 class ArrayHelper
 {
-    public function mergeNonLocaleAwareArrays(array $data, ?array $previousData, string $rowIdentifier = 'name', bool $mergeWithPrevious = false): ?array
-    {
-        if ($mergeWithPrevious === false){
+    public function mergeNonLocaleAwareArrays(
+        array $data,
+        ?array $previousData,
+        string $rowIdentifier = 'name',
+        bool $mergeWithPrevious = false
+    ): ?array {
+
+        if ($mergeWithPrevious === false) {
             return $data;
         }
 
         $newData = $previousData;
 
-        foreach ($data as $row){
-
-            dd($row);
+        foreach ($data as $row) {
 
             $previousRowIndex = array_search($row[$rowIdentifier], array_column($previousData, $rowIdentifier), true);
 
-            if($previousRowIndex === false){
+            if ($previousRowIndex === false) {
                 $newData[] = $row;
                 continue;
             }
@@ -29,11 +32,18 @@ class ArrayHelper
         return $newData;
     }
 
-    public function mergeLocaleAwareArrays(array $data, ?array $previousData, string $rowIdentifier = 'name', string $dataIdentifier = 'value', bool $mergeWithPrevious = false): ?array
-    {
+    public function mergeLocaleAwareArrays(
+        array $data,
+        ?array $previousData,
+        string $rowIdentifier = 'name',
+        string $dataIdentifier = 'value',
+        bool $mergeWithPrevious = false
+    ): ?array {
+
         $cleanedRows = $this->cleanEmptyLocaleRows($data, $dataIdentifier);
 
-        if (!is_array($previousData) || count($previousData) === 0){
+        // nothing to merge
+        if (!is_array($previousData) || count($previousData) === 0) {
             return $cleanedRows;
         }
 
@@ -41,14 +51,15 @@ class ArrayHelper
 
         $newDataIndex = 0;
 
-        if ($cleanedRows === null){
+        if ($cleanedRows === null) {
             return null;
         }
 
-        foreach ($cleanedRows as $row){
+        foreach ($cleanedRows as $row) {
+
             $previousRowIndex = array_search($row[$rowIdentifier], array_column($previousData, $rowIdentifier), true);
 
-            if ($previousRowIndex === false){
+            if ($previousRowIndex === false) {
                 $newData[$newDataIndex] = $row;
                 $newDataIndex++;
                 continue;
@@ -59,7 +70,8 @@ class ArrayHelper
             $rebuildRow = $previousData[$previousRowIndex][$dataIdentifier];
             $currentValue = $row[$dataIdentifier];
 
-            if (!is_array($currentValue) || $this->isAssocArray($currentValue)){
+            // it's not a localized field value
+            if (!is_array($currentValue) || $this->isAssocArray($currentValue)) {
                 $newData[$dataIndex] = $row;
                 $newDataIndex++;
                 continue;
@@ -67,7 +79,7 @@ class ArrayHelper
 
             $row[$dataIdentifier] = $this->rebuildLocaleValueRow($currentValue, $rebuildRow, $mergeWithPrevious);
 
-            if (count($row[$dataIdentifier]) > 0){
+            if (count($row[$dataIdentifier]) > 0) {
                 $newData[$dataIndex] = $row;
             }
 
@@ -127,7 +139,6 @@ class ArrayHelper
     {
         $cleanData = [];
         foreach ($field as $row) {
-
             if ($row[$dataIdentifier] === null) {
                 continue;
             }

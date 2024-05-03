@@ -19,10 +19,10 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
     previewContainerTemplate: null,
     delayedRefreshTask: null,
     renderAsTab: false,
-    isInShutdownMode: false,
+    isInShutDownMode: false,
 
-    initialize: function (elementType, elementId, type, configuration, availableLocales, data, renderAsTab){
-        this.elementType =  elementType;
+    initialize: function (elementType, elementId, type, configuration, availableLocales, data, renderAsTab) {
+        this.elementType = elementType;
         this.elementId = elementId;
         this.type = type;
         this.configuration = configuration;
@@ -30,7 +30,6 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
         this.data = data;
         this.renderAsTab = renderAsTab;
         // this.delayedRefreshTask = new Ext.util.DelayedTask(this.refreshLivePreview.bind(this));
-
     },
 
     getType: function () {
@@ -54,13 +53,13 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
     },
 
     hasLivePreview: function () {
-        let configuration = this.getConfiguration();
+        var configuration = this.getConfiguration();
 
-        if (configuration === null){
+        if (configuration === null) {
             return false;
         }
 
-        if (!configuration.hasOwnProperty('hasLivePreview')){
+        if (!configuration.hasOwnProperty('hasLivePreview')) {
             return false;
         }
 
@@ -68,17 +67,17 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
     },
 
     getLivePreviewTemplates: function () {
-        let configuration = this.getConfiguration();
+        var configuration = this.getConfiguration();
 
-        if (configuration === null){
+        if (configuration === null) {
             return null;
         }
 
-        if (!configuration.hasOwnProperty('livePreviewTemplates')){
+        if (!configuration.hasOwnProperty('livePreviewTemplates')) {
             return null;
         }
 
-        if (!Ext.isArray(configuration.livePreviewTemplates) || configuration.livePreviewTemplates.length === 0){
+        if (!Ext.isArray(configuration.livePreviewTemplates) || configuration.livePreviewTemplates.length === 0) {
             return null;
         }
 
@@ -117,7 +116,8 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
      * @abstract
      */
     buildLayout: function () {
-        let panelItems;
+
+        var panelItems;
 
         this.formPanel = new Ext.form.Panel({
             title: this.renderAsTab ? this.fieldSetTitle : false,
@@ -150,7 +150,7 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
             items: this.buildPanel()
         }];
 
-        // panelItems = this.generateLivePreviewPanel(panelItems);
+        panelItems = this.generateLivePreviewPanel(panelItems);
 
         this.fieldSet.add(panelItems);
 
@@ -162,7 +162,151 @@ NtrigaSeo.MetaData.Integrator.AbstractIntegrator = Class.create({
         return this.formPanel;
     },
 
+    /**
+     * @internal
+     */
+    generateLivePreviewPanel: function (panelItems) {
 
+        var tbar = null,
+            livePreviewTemplates = this.getLivePreviewTemplates();
 
+        if (!this.hasLivePreview()) {
+            return panelItems;
+        }
 
-})
+        if (livePreviewTemplates !== null) {
+
+            this.previewContainerTemplate = livePreviewTemplates.length === 1 ? livePreviewTemplates[0][0] : null;
+
+            tbar = [{
+                xtype: 'combo',
+                fieldLabel: t('seo_bundle.integrator.preview_template'),
+                labelWidth: 150,
+                mode: 'local',
+                editable: false,
+                value: this.previewContainerTemplate,
+                triggerAction: 'all',
+                itemId: 'previewTemplateSelector',
+                listeners: {
+                    change: function (cb) {
+                        var iframeComp = cb.up('panel').getComponent('previewContainer'),
+                            el = iframeComp.getEl();
+
+                        iframeComp.setLoading(true);
+
+                        this.previewContainerTemplate = cb.getValue();
+                        el.dom.src = this.getIframeUrl();
+                        el.dom.onload = function () {
+                            iframeComp.setLoading(false);
+                        };
+
+                    }.bind(this)
+                },
+                store: livePreviewTemplates
+            }];
+        }
+
+        panelItems.push({
+            xtype: 'splitter',
+            cls: 'pimcore_main_splitter',
+            collapseOnDblClick: false,
+            collapsible: false,
+            tracker: {
+                tolerance: 0
+            }
+        });
+
+        panelItems.push({
+            xtype: 'panel',
+            flex: 2,
+            isFormItem: false,
+            tbar: tbar,
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            tbarCfg: {
+                autoHeight: true
+            },
+            items: [
+                {
+                    xtype: 'component',
+                    itemId: 'previewContainer',
+                    autoEl: {
+                        height: 400,
+                        tag: 'iframe',
+                        src: this.getIframeUrl(),
+                        frameborder: 0,
+                    }
+                }
+            ],
+        });
+
+        return panelItems;
+    },
+
+    refreshLivePreviewDelayed: function () {
+        this.delayedRefreshTask.delay(800);
+    },
+
+    refreshLivePreview: function () {
+
+        var iframeEl,
+            previewContainerItems;
+
+        // prevent delayed tasks from other components coming in too late.
+        if (this.isInShutDownMode === true) {
+            return;
+        }
+
+        if (this.previewContainerIsLoading === true) {
+            return;
+        }
+
+        this.previewContainerIsLoading = true;
+        if (this.previewContainerItem === null) {
+            previewContainerItems = this.fieldSet.query('[itemId="previewContainer"]');
+            if (previewContainerItems.length === 1) {
+                this.previewContainerItem = previewContainerItems[0];
+            }
+        }
+
+        if (this.previewContainerItem === null) {
+            return;
+        }
+
+        iframeEl = this.previewContainerItem.getEl();
+        if (iframeEl === null) {
+            return;
+        }
+
+        this.previewContainerItem.setLoading(true);
+
+        iframeEl.dom.src = this.getIframeUrl();
+        iframeEl.dom.onload = function () {
+            this.previewContainerItem.setLoading(false);
+            this.previewContainerIsLoading = false;
+        }.bind(this);
+    },
+
+    getIframeUrl: function () {
+
+        var formData = this.getValuesForPreview();
+
+        if (!Ext.isObject(formData)) {
+            formData = {};
+        }
+
+        var data = {
+            data: Ext.encode(formData),
+            elementType: this.elementType,
+            elementId: this.elementId,
+            template: this.previewContainerTemplate,
+            integratorName: this.type
+        };
+
+        var query = Ext.urlEncode(data);
+
+        return '/admin/seo/meta-data/generate-meta-data-preview?' + query;
+    }
+});

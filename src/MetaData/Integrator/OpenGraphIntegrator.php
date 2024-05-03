@@ -52,13 +52,41 @@ class OpenGraphIntegrator extends AbstractIntegrator implements IntegratorInterf
         $arrayModifier = new ArrayHelper();
 
         if ($elementType === 'object'){
-            $newData = $arrayModifier->mergeLocaleAwareArrays($data, $previousData, 'property', 'value', $merge);
-        } else{
-            $newData = $arrayModifier->mergeNonLocaleAwareArrays($data, $previousData, 'property', $merge);
+            $newData = $this->mergeStorageAndEditModeLocaleAwareData($data, $previousData, $merge);
         }
 
         if (is_array($newData) && count($newData) === 0){
             return null;
+        }
+
+        return $newData;
+    }
+
+    protected function mergeStorageAndEditModeLocaleAwareData(array $data, ?array $previousData, bool $mergeWithPrevious = false): array
+    {
+        $arrayModifier = new ArrayHelper();
+
+        // nothing to merge, just clean up
+        if (!is_array($previousData) || count($previousData) === 0) {
+            return [
+                'og:title'       => $arrayModifier->cleanEmptyLocaleRows($data['og:title']),
+                'og:description' => $arrayModifier->cleanEmptyLocaleRows($data['og:description']),
+                'og:image.alt' => $arrayModifier->cleanEmptyLocaleRows($data['og:image.alt'])
+            ];
+        }
+
+        $newData = $mergeWithPrevious ? $previousData : [];
+
+        foreach (['og:title', 'og:description', 'og:image.alt'] as $type) {
+
+            $rebuildRow = $previousData[$type] ?? [];
+
+            if (!isset($data[$type]) || !is_array($data[$type])) {
+                $newData[$type] = $rebuildRow;
+                continue;
+            }
+
+            $newData[$type] = $arrayModifier->rebuildLocaleValueRow($data[$type], $rebuildRow, $mergeWithPrevious);
         }
 
         return $newData;

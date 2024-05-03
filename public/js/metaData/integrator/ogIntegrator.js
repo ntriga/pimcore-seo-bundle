@@ -55,7 +55,10 @@ NtrigaSeo.MetaData.Integrator.OpenGraphIntegrator = Class.create(NtrigaSeo.MetaD
 
         return {
             xtype: 'fieldcontainer',
-            layout: 'hbox',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
             style: {
                 marginTop: '5px',
                 paddingBottom: '5px',
@@ -81,20 +84,23 @@ NtrigaSeo.MetaData.Integrator.OpenGraphIntegrator = Class.create(NtrigaSeo.MetaD
             return this.generateContentField(propertyTypeValue, false, false, null);
         }
 
-        lfExtension = new NtrigaSeo.MetaData.Extension.LocalizedFieldExtension(this.id, this.availableLocales);
+        lfExtension = new NtrigaSeo.MetaData.Extension.LocalizedFieldExtension(this.id, this.getAvailableLocales());
 
 
         params = {
             showFieldLabel: true,
-            fieldLabel: t('seo_bundle.integrator.property.label_content'),
+            fieldLabel: propertyTypeValue,
             editorWindowWidth: 700,
             editorWindowHeight: 300,
             onGridRefreshRequest: function () {
                 // this.refreshFieldCallback.call(this)
             }.bind(this),
-            onGridStoreRequest: this.onLocalizedGridStoreRequest.bind(this),
+            onGridStoreRequest: function (locale) {
+                return this.onLocalizedGridStoreRequest(this.lfIdentifier, propertyTypeValue, locale)
+            }.bind(this),
             onLayoutRequest: this.generateContentField.bind(this, propertyTypeValue, true, true)
         };
+
 
         return lfExtension.generateLocalizedField(params);
     },
@@ -172,15 +178,15 @@ NtrigaSeo.MetaData.Integrator.OpenGraphIntegrator = Class.create(NtrigaSeo.MetaD
         return returnAsArray ? [field] : field;
     },
 
-    onLocalizedGridStoreRequest: function (lfIdentifier) {
+    onLocalizedGridStoreRequest: function (lfIdentifier, propertyTypeValue) {
         return [
             {
                 title: t('seo_bundle.integrator.property.label_content'),
-                storeIdentifier: 'value',
+                storeIdentifier: propertyTypeValue,
                 onFetchStoredValue: function (locale) {
-                    return this.getStoredValue('value', locale);
+                    return this.getStoredValue(propertyTypeValue, locale);
                 }.bind(this)
-            }
+            },
         ];
     },
 

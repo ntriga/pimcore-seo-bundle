@@ -9,7 +9,7 @@ NtrigaSeo.MetaData.Integrator.TitleDescriptionIntegrator = Class.create(NtrigaSe
 
     initLegacyDocumentFields: function (panel) {
 
-        let documentPanel;
+        var documentPanel;
 
         if (this.elementType !== 'document') {
             return;
