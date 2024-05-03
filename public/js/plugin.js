@@ -52,6 +52,28 @@ class NtrigaSeoCore {
         }
     }
 
+    postOpenObject(ev){
+        const object = ev.detail.object;
+
+        if (this.ready){
+            this.processElement(object, 'object');
+        } else{
+            this.addElementToQueue(object, 'object');
+        }
+    }
+
+    postSaveObject(ev){
+        const object = ev.detail.object;
+
+        if (ev.detail.task === 'autosave' || ev.detail.task === 'version'){
+            return;
+        }
+
+        if (object.hasOwnProperty('seoPanel')){
+            object.seoPanel.save();
+        }
+    }
+
     addElementToQueue(obj, type){
         this.dataQueue.push({'obj': obj, 'type': type});
     }
@@ -76,6 +98,9 @@ class NtrigaSeoCore {
         if (type === 'page' && this.configuration.documents.enabled === true && ['page'].indexOf(obj.type) !== -1){
             obj.seoPanel = new NtrigaSeo.MetaData.DocumentMetaDataPanel(obj, this.configuration);
             obj.seoPanel.setup(type, this.configuration.documents.hide_pimcore_default_seo_panel);
+        } else if (type === 'object' && this.configuration.objects.enabled === true && this.configuration.objects.data_classes.indexOf(obj.data.general.className) !== -1){
+            obj.seoPanel = new NtrigaSeo.MetaData.ObjectMetaDataPanel(obj, this.configuration);
+            obj.seoPanel.setup(type);
         }
     }
 }
@@ -85,3 +110,6 @@ const seoCoreHandler = new NtrigaSeoCore()
 document.addEventListener(pimcore.events.pimcoreReady, seoCoreHandler.init.bind(seoCoreHandler));
 document.addEventListener(pimcore.events.postOpenDocument, seoCoreHandler.postOpenDocument.bind(seoCoreHandler));
 document.addEventListener(pimcore.events.postSaveDocument, seoCoreHandler.postSaveDocument.bind(seoCoreHandler));
+document.addEventListener(pimcore.events.postOpenObject, seoCoreHandler.postOpenObject.bind(seoCoreHandler));
+document.addEventListener(pimcore.events.postSaveObject, seoCoreHandler.postSaveObject.bind(seoCoreHandler));
+

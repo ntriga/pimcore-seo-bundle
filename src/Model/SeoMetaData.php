@@ -11,6 +11,7 @@ class SeoMetaData implements SeoMetaDataInterface
 
     private int $id;
     private string $originalUrl;
+    private bool $indexPage = true;
     private string $metaDescription = '';
     private string $title = '';
     private string $canonicalUrl = '';
@@ -65,6 +66,19 @@ class SeoMetaData implements SeoMetaDataInterface
     public function getOriginalUrl(): string
     {
         return $this->originalUrl;
+    }
+
+    /**
+     * @param bool $indexPage
+     */
+    public function setIndexPage(bool $indexPage): void
+    {
+        $this->indexPage = $indexPage;
+    }
+
+    public function getIndexPage(): bool
+    {
+        return $this->indexPage;
     }
 
     public function setTitle($title): void

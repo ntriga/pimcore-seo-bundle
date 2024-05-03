@@ -1,8 +1,8 @@
-pimcore.registerNS('NtrigaSeo.MetaData.Integrator.CanonicalIntegrator');
-NtrigaSeo.MetaData.Integrator.CanonicalIntegrator = Class.create(NtrigaSeo.MetaData.Integrator.AbstractIntegrator, {
+pimcore.registerNS('NtrigaSeo.MetaData.Integrator.IndexIntegrator');
+NtrigaSeo.MetaData.Integrator.IndexIntegrator = Class.create(NtrigaSeo.MetaData.Integrator.AbstractIntegrator, {
 
-    fieldSetTitle: t('seo_bundle.integrator.canonical.title'),
-    iconClass: 'seo_integrator_icon_icon_canonical',
+    fieldSetTitle: t('seo_bundle.integrator.index.title'),
+    iconClass: 'seo_integrator_icon_icon_index',
     schemaPanel: null,
 
     isCollapsed: function () {
@@ -37,18 +37,20 @@ NtrigaSeo.MetaData.Integrator.CanonicalIntegrator = Class.create(NtrigaSeo.MetaD
     },
 
     generateFields: function (isProxy, lfIdentifier, locale) {
-        let storedCanonical = this.getStoredValue('canonical', locale),
-            configuration = this.getConfiguration(),
-            canonicalValue = storedCanonical !== null ? storedCanonical : configuration['defaultCanonical'];
+        let indexValue = this.getStoredValue('index', locale),
+            configuration = this.getConfiguration();
+
+
+        console.log(indexValue);
 
         return [
             {
-                xtype: 'textfield',
-                fieldLabel: t('seo_bundle.integrator.canonical.title'),
-                name: 'canonical',
-                itemId: 'canonical',
+                xtype: 'checkboxfield',
+                fieldLabel: t('seo_bundle.integrator.index.checkbox'),
+                name: 'index',
+                itemId: 'index',
                 maxLength: 255,
-                value: canonicalValue,
+                value: indexValue !== null ? 'true' : 'false',
             }
         ]
     },
@@ -56,7 +58,7 @@ NtrigaSeo.MetaData.Integrator.CanonicalIntegrator = Class.create(NtrigaSeo.MetaD
     onLocalizedGridStoreRequest: function (lfIdentifier) {
         return [
             {
-                title: t('seo_bundle.integrator.canonical.title'),
+                title: t('seo_bundle.integrator.index.title'),
                 storeIdentifier: 'canonical',
                 onFetchStoredValue: function (locale) {
                     return this.getStoredValue('canonical', locale)
@@ -81,6 +83,9 @@ NtrigaSeo.MetaData.Integrator.CanonicalIntegrator = Class.create(NtrigaSeo.MetaD
 
         formValues = this.formPanel.form.getValues();
 
+        console.log('formValues', formValues);
+
         return formValues;
     }
+
 })

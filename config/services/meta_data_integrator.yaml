@@ -27,3 +27,7 @@ services:
     Ntriga\PimcoreSeoBundle\MetaData\Integrator\CanonicalIntegrator:
         tags:
             - { name: seo.meta_data.integrator, identifier: canonical }
+
+    Ntriga\PimcoreSeoBundle\MetaData\Integrator\IndexIntegrator:
+        tags:
+            - { name: seo.meta_data.integrator, identifier: index }
