@@ -59,9 +59,9 @@ NtrigaSeo.MetaData.Integrator.IndexIntegrator = Class.create(NtrigaSeo.MetaData.
         return [
             {
                 title: t('seo_bundle.integrator.index.title'),
-                storeIdentifier: 'canonical',
+                storeIdentifier: 'index',
                 onFetchStoredValue: function (locale) {
-                    return this.getStoredValue('canonical', locale)
+                    return this.getStoredValue('index', locale)
                 }.bind(this)
             }
         ];

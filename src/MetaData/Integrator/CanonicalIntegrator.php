@@ -60,7 +60,6 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
 
     public function validateBeforePersist(string $elementType, int $elementId, array $data, ?array $previousData = null, bool $merge = false): ?array
     {
-
         if (empty($data['canonical'])){
             return null;
         }

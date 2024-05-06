@@ -48,18 +48,15 @@ class OpenGraphIntegrator extends AbstractIntegrator implements IntegratorInterf
 
     public function validateBeforePersist(string $elementType, int $elementId, array $data, ?array $previousData = null, bool $merge = false): ?array
     {
-
-        $arrayModifier = new ArrayHelper();
-
         if ($elementType === 'object'){
-            $newData = $this->mergeStorageAndEditModeLocaleAwareData($data, $previousData, $merge);
+            $data = $this->mergeStorageAndEditModeLocaleAwareData($data, $previousData, $merge);
         }
 
-        if (is_array($newData) && count($newData) === 0){
+        if (count($data) === 0){
             return null;
         }
 
-        return $newData;
+        return $data;
     }
 
     protected function mergeStorageAndEditModeLocaleAwareData(array $data, ?array $previousData, bool $mergeWithPrevious = false): array
