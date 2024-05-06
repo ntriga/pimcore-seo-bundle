@@ -130,7 +130,6 @@ class OpenGraphIntegrator extends AbstractIntegrator implements IntegratorInterf
             return [$value['name'], $value['tag']];
         }, $this->getDefaultTypes());
 
-//        $defaultPresets = $this->getDefaultPresets();
         $defaultProperties = $this->getDefaultProperties();
 
         $defaultProperties = array_map(static function ($translatable, $key) {
@@ -141,7 +140,6 @@ class OpenGraphIntegrator extends AbstractIntegrator implements IntegratorInterf
             return count($row) === 2 ? [$row[0], $row[1], false] : $row;
         }, $configuration['properties']);
 
-//        $configuration['presets'] = array_merge($defaultPresets, $configuration['presets']);
         $configuration['types'] = array_merge($defaultTypes, $configuration['types']);
         $configuration['properties'] = array_merge($defaultProperties, $additionalProperties);
 

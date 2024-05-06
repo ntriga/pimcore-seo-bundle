@@ -96,8 +96,6 @@ NtrigaSeo.MetaData.AbstractMetaDataPanel = Class.create({
     save: function () {
         const integratorValues = this.getIntegratorValues();
 
-        console.log('integrator values', integratorValues);
-
         Ext.Ajax.request({
             url: '/admin/ntrigaseo/meta-data/set-element-meta-data-configuration',
             method: 'POST',

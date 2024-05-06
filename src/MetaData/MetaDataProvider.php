@@ -25,6 +25,8 @@ class MetaDataProvider implements MetaDataProviderInterface
     {
         $seoMetadata = $this->getSeoMetaData($element, $locale);
 
+        dd($seoMetadata);
+
 
         if ($seoMetadata->getCanonicalUrl() !== null || $this->generateDefaultCanonical($element) !== null){
             $canonicalUrl = $seoMetadata->getCanonicalUrl() !== null ? $seoMetadata->getCanonicalUrl() : $this->generateDefaultCanonical($element);

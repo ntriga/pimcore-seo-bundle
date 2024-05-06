@@ -40,9 +40,6 @@ NtrigaSeo.MetaData.Integrator.IndexIntegrator = Class.create(NtrigaSeo.MetaData.
         let indexValue = this.getStoredValue('index', locale),
             configuration = this.getConfiguration();
 
-
-        console.log(indexValue);
-
         return [
             {
                 xtype: 'checkboxfield',
@@ -82,8 +79,6 @@ NtrigaSeo.MetaData.Integrator.IndexIntegrator = Class.create(NtrigaSeo.MetaData.
         }
 
         formValues = this.formPanel.form.getValues();
-
-        console.log('formValues', formValues);
 
         return formValues;
     }

@@ -2,10 +2,14 @@
 
 namespace Ntriga\PimcoreSeoBundle\MetaData\Integrator;
 
+use Ntriga\PimcoreSeoBundle\Helper\ArrayHelper;
 use Ntriga\PimcoreSeoBundle\Model\SeoMetaDataInterface;
 use Ntriga\PimcoreSeoBundle\Tool\UrlGenerator;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Document;
+use Pimcore\Tool;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterface
@@ -20,23 +24,28 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
 
     public function getBackendConfiguration(mixed $element): array
     {
-        $defaultCanonical = $this->getDefaultCanonical($element);
+        $canonicalUrls = [];
+        if ($element instanceof DataObject){
+            $validLanguages = Tool::getValidLanguages();
+            foreach ($validLanguages as $language){
+                $url = $this->getDefaultCanonical($element, $language);
+                $canonicalUrls[$language] = $url;
+            }
+        } else{
+            $canonicalUrls['default'] = $this->getDefaultCanonical($element);
+        }
 
         return [
-            'defaultCanonical' => $defaultCanonical,
+            'defaultCanonical' => $canonicalUrls,
             'hasLivePreview' => false,
             'livePreviewTemplates' => [],
             'useLocalizedFields' => $element instanceof DataObject
         ];
     }
 
-    private function getDefaultCanonical(mixed $element): ?string
+    private function getDefaultCanonical(mixed $element, ?string $locale = null): ?string
     {
-        if ($element instanceof Document){
-            return $this->urlGenerator->generate($element);
-        }
-
-        return null;
+        return $this->urlGenerator->generate($element , $locale !== null ? ['_locale' => $locale] : []);
     }
 
     public function validateBeforeBackend(string $elementType, int $elementId, array $data): array
@@ -49,39 +58,56 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
         $defaultUrl = $this->getDefaultCanonical($element);
 
 
-        if (!empty($data['canonical']) && $data['canonical'] !== $defaultUrl){
-            $seoMetaData->setCanonicalUrl($data['canonical']);
+        if (null !== $value = $this->findLocaleAwareData($data['canonical'] ?? null, $locale)){
+            $seoMetaData->setCanonicalUrl($value);
         } else{
             $seoMetaData->setCanonicalUrl($defaultUrl);
         }
-
 
     }
 
     public function validateBeforePersist(string $elementType, int $elementId, array $data, ?array $previousData = null, bool $merge = false): ?array
     {
-        if (empty($data['canonical'])){
+        if (empty($data['canonical'])) {
             return null;
         }
 
-        $data['canonical'] = $this->normalizeCanonicalUrl($data['canonical']);
-
+        if ($elementType === 'object') {
+            $data = $this->mergeStorageAndEditModeLocaleAwareData($data, $previousData, $merge);
+            if ($data['canonical'] === null) {
+                return null;
+            }
+            foreach ($data['canonical'] as $key => $value) {
+                if ($value['value'] !== null) {
+                    $data['canonical'][$key] = ['locale' => $value['locale'], 'value' => $value['value']];
+                }
+            }
+        }
 
         return $data;
     }
 
-    /**
-     * Ensures that canonical URL starts with "https://", if not, prepends it.
-     * @param string $url
-     * @return string
-     */
-    private function normalizeCanonicalUrl(string $url): string
+    protected function mergeStorageAndEditModeLocaleAwareData(array $data, ?array $previousData, bool $mergeWithPrevious = false): array
     {
-        if (!preg_match('/^https?:\/\//', $url)){
-            $url = 'https://' . $url;
+        $arrayModifier = new ArrayHelper();
+
+        if (!is_array($previousData) || count($previousData) === 0) {
+            return [
+                'canonical' => $arrayModifier->cleanEmptyLocaleRows($data['canonical']),
+            ];
         }
 
-        return $url;
+        $newData = $mergeWithPrevious ? $previousData : [];
+
+        $rebuildRow = $previousData['canonical'] ?? [];
+
+        if (!isset($data['canonical']) || !is_array($data['canonical'])) {
+            $newData['canonical'] = $rebuildRow;
+        }
+
+        $newData['canonical'] = $arrayModifier->rebuildLocaleValueRow($data['canonical'], $rebuildRow, $mergeWithPrevious);
+
+        return $newData;
     }
 
     public function setConfiguration(array $configuration): void

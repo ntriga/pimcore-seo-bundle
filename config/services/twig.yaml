@@ -1,9 +1,10 @@
 services:
+
     _defaults:
-      autowire: true
-      autoconfigure: true
-      public: false
+        autowire: true
+        autoconfigure: true
+        public: false
 
     Ntriga\PimcoreSeoBundle\Twig\Extension\SeoExtension:
         tags:
-          - { name: twig.extension }
+            - { name: twig.extension }

@@ -49,11 +49,11 @@ class UrlGenerator implements UrlGeneratorInterface
         return $url;
     }
 
-    protected function generateForObject(DataObject\Concrete $object, array $options)
+    protected function generateForObject(DataObject\Concrete $object, array $options = [])
     {
         $linkGenerator = $object->getClass()->getLinkGenerator();
         if ($linkGenerator instanceof DataObject\ClassDefinition\LinkGeneratorInterface){
-            $link = $linkGenerator->generate($object, []);
+            $link = $linkGenerator->generate($object, $options);
             if (!str_contains($link, 'http')){
                 $link = sprintf('%s/%s', $this->getCurrentSchemeAndHost(), ltrim($link, '/'));
             }

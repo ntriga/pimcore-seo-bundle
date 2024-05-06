@@ -37,9 +37,10 @@ NtrigaSeo.MetaData.Integrator.CanonicalIntegrator = Class.create(NtrigaSeo.MetaD
     },
 
     generateFields: function (isProxy, lfIdentifier, locale) {
-        let storedCanonical = this.getStoredValue('canonical', locale),
+        let storedCanonical = this.getStoredValue('canonical', locale) ?? null,
             configuration = this.getConfiguration(),
-            canonicalValue = storedCanonical !== null ? storedCanonical : configuration['defaultCanonical'];
+            defaultKey = configuration['useLocalizedFields'] ? locale : 'default',
+            canonicalValue = storedCanonical !== null ? storedCanonical : configuration['defaultCanonical'][defaultKey];
 
         return [
             {
@@ -73,14 +74,38 @@ NtrigaSeo.MetaData.Integrator.CanonicalIntegrator = Class.create(NtrigaSeo.MetaD
     },
 
     getValues: function () {
-        let formValues;
+        let formValues, configuration = this.getConfiguration();
 
         if (this.formPanel === null){
             return {};
         }
 
         formValues = this.formPanel.form.getValues();
+        const defaultCanonical = configuration['defaultCanonical'];
+        let outputValues = {canonical: []};
 
-        return formValues;
+        if (configuration['useLocalizedFields'] === true && formValues['canonical']) {
+            Ext.Array.each(formValues['canonical'], function (localizedInput) {
+                if (localizedInput && localizedInput.value !== defaultCanonical[localizedInput.locale]) {
+                    outputValues['canonical'].push({
+                        locale: localizedInput.locale,
+                        value: localizedInput.value
+                    });
+                } else {
+                    outputValues['canonical'].push({
+                        locale: localizedInput.locale,
+                        value: ''
+                    });
+                }
+            });
+        } else {
+            if (defaultCanonical['default'] === formValues['canonical']) {
+                outputValues['canonical'] = '';
+            } else {
+                outputValues['canonical'] = formValues['canonical'];
+            }
+        }
+
+        return outputValues;
     }
 })
