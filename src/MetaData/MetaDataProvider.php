@@ -24,7 +24,7 @@ class MetaDataProvider implements MetaDataProviderInterface
     public function updateSeoElement($element, ?string $locale): void
     {
         $seoMetadata = $this->getSeoMetaData($element, $locale);
-        
+
 
         if ($seoMetadata->getCanonicalUrl() !== null || $this->generateDefaultCanonical($element) !== null){
             $canonicalUrl = $seoMetadata->getCanonicalUrl() !== null ? $seoMetadata->getCanonicalUrl() : $this->generateDefaultCanonical($element);
