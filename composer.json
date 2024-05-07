@@ -31,7 +31,6 @@
     },
     "require": {
         "pimcore/pimcore": "^11.0",
-        "doctrine/orm": "^2.7",
-        "ntriga/pimcore-link-generator": "^11.0"
+        "doctrine/orm": "^2.7"
     }
 }

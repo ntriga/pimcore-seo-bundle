@@ -37,3 +37,45 @@ Execute the following command to install the bundle:
 ```bash
 bin/console pimcore:bundle:install NtrigaPimcoreSeoBundle
 ```
+
+## Default configuration
+Default configuration for the bundle can look like this:
+
+```yaml
+ntriga_pimcore_seo:
+    meta_data_configuration:
+        meta_data_provider:
+            auto_detect_documents: true
+        meta_data_integrator:
+            documents:
+                enabled: true
+                hide_pimcore_default_seo_panel: true
+            objects:
+                enabled: true
+                data_classes:
+                    - Product
+            enabled_integrator:
+                -   integrator_name: title_description
+                -   integrator_name: open_graph
+                    integrator_config:
+                        facebook_image_thumbnail: 'socialThumb'
+                -   integrator_name: schema
+                -   integrator_name: canonical
+                -   integrator_name: index
+```
+
+## More information
+For more info about the integrators, check [Setup](./docs/00_Setup.md)
+
+
+## Changelog
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Credits
+- [Joey Daems](https://github.com/JoeyNtriga)
+- [DACHCOM.DIGITAL](https://github.com/dachcom-digital)
+- [All contributors](../../contributors)
+
+## License
+GNU General Public License version 3 (GPLv3). Please see [License File](./LICENSE.md) for more information.
+
