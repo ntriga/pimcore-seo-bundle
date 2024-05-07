@@ -64,8 +64,8 @@ ntriga_pimcore_seo:
                 -   integrator_name: index
 ```
 
-## More information
-For more info about the integrators, check [Setup](./docs/00_Setup.md)
+## Further configuration
+For more information about the setup, check [Setup](./docs/00_Setup.md)
 
 
 ## Changelog
