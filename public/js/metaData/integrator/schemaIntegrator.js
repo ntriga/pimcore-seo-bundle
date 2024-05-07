@@ -147,7 +147,6 @@ NtrigaSeo.MetaData.Integrator.SchemaIntegrator = Class.create(NtrigaSeo.MetaData
 
         params = {
             showFieldLabel: false,
-            //onGridRefreshRequest: this.refreshLivePreviewDelayed.bind(this),
             onGridStoreRequest: this.onLocalizedGridStoreRequest.bind(this),
             onLayoutRequest: this.getSchemaEditorField.bind(this, true)
         };
