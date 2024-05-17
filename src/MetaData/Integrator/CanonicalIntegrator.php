@@ -28,8 +28,8 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
         if ($element instanceof DataObject){
             $validLanguages = Tool::getValidLanguages();
             foreach ($validLanguages as $language){
-                $url = $this->getDefaultCanonical($element, $language);
-                $canonicalUrls[$language] = $url;
+//                $url = $this->getDefaultCanonical($element, $language);
+                $canonicalUrls[$language] = null;
             }
         } else{
             $canonicalUrls['default'] = $this->getDefaultCanonical($element);
