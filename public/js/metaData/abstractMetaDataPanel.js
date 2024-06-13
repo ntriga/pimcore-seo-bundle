@@ -25,7 +25,7 @@ NtrigaSeo.MetaData.AbstractMetaDataPanel = Class.create({
     buildSeoMetaDataTab: function () {
         this.layout = new Ext.FormPanel({
             title: 'SEO',
-            iconCls: 'pimcore_material_icon',
+            iconCls: 'pimcore_material_icon seo_icon_meta_data',
             border: false,
             autoScroll: true,
             bodyStyle: this.renderAsTab ? 'padding: 10px;' : 'padding: 0 10px',

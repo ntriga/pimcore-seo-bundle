@@ -1,0 +1,24 @@
+.seo_icon_meta_data {
+    background: url(/bundles/ntrigapimcoreseo/img/icon_seo_white.svg) no-repeat scroll left center transparent !important;
+}
+
+.seo_integrator_icon_icon_og {
+    background: url(/bundles/ntrigapimcoreseo/img/integrators/icon_open_graph.svg) center center no-repeat !important;
+}
+
+.seo_integrator_icon_title_description {
+    background: url(/bundles/ntrigapimcoreseo/img/integrators/icon_seo_title_description.svg) center center no-repeat !important;
+}
+
+.seo_integrator_icon_icon_index{
+    background: url(/bundles/ntrigapimcoreseo/img/integrators/icon_seo_no-index.svg) center center no-repeat !important;
+    padding: 5px;
+}
+
+.seo_integrator_icon_icon_schema {
+    background: url(/bundles/ntrigapimcoreseo/img/integrators/icon_seo_schema_blocks.svg) center center no-repeat !important;
+}
+
+.seo_integrator_icon_icon_canonical{
+    background: url(/bundles/ntrigapimcoreseo/img/integrators/icon_seo_canonical.svg) center center no-repeat !important;
+}
