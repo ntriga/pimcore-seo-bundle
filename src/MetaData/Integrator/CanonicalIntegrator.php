@@ -28,8 +28,8 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
         if ($element instanceof DataObject){
             $validLanguages = Tool::getValidLanguages();
             foreach ($validLanguages as $language){
-//                $url = $this->getDefaultCanonical($element, $language);
-                $canonicalUrls[$language] = null;
+                $url = $this->getDefaultCanonical($element, $language);
+                $canonicalUrls[$language] = $url;
             }
         } else{
             $canonicalUrls['default'] = $this->getDefaultCanonical($element);
@@ -45,7 +45,11 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
 
     private function getDefaultCanonical(mixed $element, ?string $locale = null): ?string
     {
-        return $this->urlGenerator->generate($element , $locale !== null ? ['_locale' => $locale] : []);
+        try {
+            return $this->urlGenerator->generate($element , $locale !== null ? ['_locale' => $locale] : []);
+        } catch (\Exception){
+            return null;
+        }
     }
 
     public function validateBeforeBackend(string $elementType, int $elementId, array $data): array
