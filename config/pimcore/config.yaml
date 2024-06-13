@@ -4,7 +4,3 @@ doctrine:
         entity_managers:
             default:
                 auto_mapping: true
-
-doctrine_migrations:
-    migrations_paths:
-        'Ntriga\PimcoreSeoBundle\Migrations': '@NtrigaPimcoreSeoBundle/src/Migrations'
