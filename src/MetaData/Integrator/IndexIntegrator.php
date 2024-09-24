@@ -4,6 +4,7 @@ namespace Ntriga\PimcoreSeoBundle\MetaData\Integrator;
 
 use Ntriga\PimcoreSeoBundle\Model\SeoMetaDataInterface;
 use Pimcore\Model\DataObject;
+use Pimcore\Tool;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class IndexIntegrator extends AbstractIntegrator implements IntegratorInterface
@@ -19,6 +20,27 @@ class IndexIntegrator extends AbstractIntegrator implements IntegratorInterface
         ];
     }
 
+    protected function findLocaleAwareData(mixed $data, ?string $requestedLocale, string $returnType = 'scalar'): mixed
+    {
+        if ($requestedLocale === null) {
+            return null;
+        }
+
+        $value = $this->findData($data, $requestedLocale, $returnType);
+
+        if ($value !== null){
+            return $value;
+        }
+
+        foreach (Tool::getFallbackLanguagesFor($requestedLocale) as $fallbackLocale) {
+            if (null !== $fallBackValue = $this->findData($data, $fallBackLocale, $returnType)) {
+                return $fallBackValue;
+            }
+        }
+
+        return null;
+    }
+
     public function validateBeforeBackend(string $elementType, int $elementId, array $data): array
     {
         return $data;
@@ -26,8 +48,8 @@ class IndexIntegrator extends AbstractIntegrator implements IntegratorInterface
 
     public function updateMetaData(mixed $element, array $data, ?string $locale, SeoMetaDataInterface $seoMetaData): void
     {
-        if (!empty($data['index'])) {
-            $seoMetaData->setIndexPage(false);
+        if (null !== $value = $this->findLocaleAwareData($data['index'] ?? null, $locale)) {
+            $seoMetaData->setIndexPage($value === 'false');
         }
     }
 

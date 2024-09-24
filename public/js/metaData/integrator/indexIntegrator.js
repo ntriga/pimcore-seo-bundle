@@ -47,7 +47,9 @@ NtrigaSeo.MetaData.Integrator.IndexIntegrator = Class.create(NtrigaSeo.MetaData.
                 name: 'index',
                 itemId: 'index',
                 maxLength: 255,
-                value: indexValue !== null ? 'true' : 'false',
+                inputValue: 'true',
+                uncheckedValue: 'false',
+                value: indexValue,
             }
         ]
     },
@@ -55,7 +57,7 @@ NtrigaSeo.MetaData.Integrator.IndexIntegrator = Class.create(NtrigaSeo.MetaData.
     onLocalizedGridStoreRequest: function (lfIdentifier) {
         return [
             {
-                title: t('seo_bundle.integrator.index.title'),
+                title: t('seo_bundle.integrator.index.checkbox'),
                 storeIdentifier: 'index',
                 onFetchStoredValue: function (locale) {
                     return this.getStoredValue('index', locale)
