@@ -6,6 +6,7 @@ use Ntriga\PimcoreSeoBundle\Middleware\MiddlewareDispatcherInterface;
 use Ntriga\PimcoreSeoBundle\Model\SeoMetaData;
 use Ntriga\PimcoreSeoBundle\Registry\MetaDataExtractorRegistryInterface;
 use Ntriga\PimcoreSeoBundle\Tool\UrlGenerator;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\Document;
 use Pimcore\Twig\Extension\Templating\HeadMeta;
 use Pimcore\Twig\Extension\Templating\HeadTitle;
@@ -25,12 +26,13 @@ class MetaDataProvider implements MetaDataProviderInterface
     {
         $seoMetadata = $this->getSeoMetaData($element, $locale);
 
+        $defaultCanonical = $this->generateDefaultCanonical($element);
+        if ($seoMetadata->getCanonicalUrl() !== null || $defaultCanonical !== null){
+            $canonicalUrl = (!empty($seoMetadata->getCanonicalUrl()))
+                ? $seoMetadata->getCanonicalUrl()
+                : $defaultCanonical;
 
-        if ($seoMetadata->getCanonicalUrl() !== null || $this->generateDefaultCanonical($element) !== null){
-            $canonicalUrl = $seoMetadata->getCanonicalUrl() !== null ? $seoMetadata->getCanonicalUrl() : $this->generateDefaultCanonical($element);
-
-            $defaultCanonical = $this->generateDefaultCanonical($element);
-            $canonicalTag = '<link rel="canonical" href="' . htmlspecialchars($defaultCanonical, ENT_QUOTES, 'UTF-8') . '" />';
+            $canonicalTag = '<link rel="canonical" href="' . htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8') . '" />';
             $this->headMeta->addRaw($canonicalTag);
         }
 
@@ -107,7 +109,7 @@ class MetaDataProvider implements MetaDataProviderInterface
 
     protected function generateDefaultCanonical(mixed $element): ?string
     {
-        if ($element instanceof Document){
+        if ($element instanceof Document || $element instanceof DataObject){
             return $this->urlGenerator->generate($element);
         }
 
