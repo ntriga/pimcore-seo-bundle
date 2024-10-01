@@ -74,8 +74,12 @@ class MetaDataProvider implements MetaDataProviderInterface
             }
         }
 
-        if ($seoMetadata->getTitle()) {
-            $this->headTitle->set($seoMetadata->getTitle());
+        $title = $seoMetadata->getTitle();
+        if (!$title){
+            $title = $this->generateDefaultTitle($element);
+        }
+        if ($title) {
+            $this->headTitle->prepend($title);
         }
 
         if ($seoMetadata->getMetaDescription()) {
@@ -111,6 +115,60 @@ class MetaDataProvider implements MetaDataProviderInterface
     {
         if ($element instanceof Document || $element instanceof DataObject){
             return $this->urlGenerator->generate($element);
+        }
+
+        return null;
+    }
+
+    protected function generateDefaultTitle(mixed $element): ?string
+    {
+        if ($element instanceof Document){
+            if ($element->hasProperty('navigation_title')) {
+                $title = $element->getProperty('navigation_title');
+                if ($title) {
+                    return $title;
+                }
+            }
+
+            if ($element->hasProperty('navigation_name')) {
+                $title = $element->getProperty('navigation_name');
+                if ($title) {
+                    return $title;
+                }
+            }
+
+            if (method_exists($element, 'getKey')) {
+                $title = $element->getKey();
+                if ($title) {
+                    return $title;
+                }
+            }
+        }
+
+        if ($element instanceof DataObject){
+            if (method_exists($element, 'getTitle')){
+                $title = $element->getTitle();
+
+                if ($title) {
+                    return $title;
+                }
+            }
+
+            if (method_exists($element, 'getName')){
+                $title = $element->getName();
+
+                if ($title) {
+                    return 'test';
+                }
+            }
+
+            if (method_exists($element, 'getKey')){
+                $title = $element->getKey();
+
+                if ($title) {
+                    return $title;
+                }
+            }
         }
 
         return null;
