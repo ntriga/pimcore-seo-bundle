@@ -158,7 +158,7 @@ class MetaDataProvider implements MetaDataProviderInterface
                 $title = $element->getName();
 
                 if ($title) {
-                    return 'test';
+                    return $title;
                 }
             }
 
