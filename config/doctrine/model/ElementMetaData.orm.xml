@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping
+    xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Ntriga\PimcoreSeoBundle\Model\ElementMetaData" table="seo_element_meta_data">
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="elementType" type="string" column="element_type" nullable="false"/>
+        <field name="elementId" type="integer" column="element_id" nullable="false"/>
+        <field name="integrator" type="string" column="integrator" nullable="false"/>
+        <field name="data" type="array" column="data" nullable="false"/>
+
+        <unique-constraints>
+            <unique-constraint name="element_type_id_integrator" columns="element_type, element_id, integrator"/>
+        </unique-constraints>
+    </entity>
+</doctrine-mapping>

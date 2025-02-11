@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping
+    xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Ntriga\PimcoreSeoBundle\Model\QueueEntry" table="seo_queue_entry">
+        <id name="uuid" type="uuid" column="uuid">
+            <generator strategy="CUSTOM"/>
+            <custom-id-generator class="Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator"/>
+        </id>
+        <field name="type" type="string" column="`type`" nullable="false"/>
+        <field name="dataType" type="string" column="data_type" nullable="false"/>
+        <field name="dataId" type="integer" column="data_id" nullable="false"/>
+        <field name="dataUrl" type="text" column="data_url" nullable="false"/>
+        <field name="worker" type="string" column="worker" nullable="false"/>
+        <field name="resourceProcessor" type="string" column="resource_processor" nullable="false"/>
+        <field name="creationDate" type="datetime" column="creation_date" nullable="false"/>
+    </entity>
+</doctrine-mapping>
