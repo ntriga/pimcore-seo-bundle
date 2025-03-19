@@ -48,15 +48,34 @@ class OpenGraphIntegrator extends AbstractIntegrator implements IntegratorInterf
 
     public function validateBeforePersist(string $elementType, int $elementId, array $data, ?array $previousData = null, bool $merge = false): ?array
     {
-        if ($elementType === 'object'){
-            $data = $this->mergeStorageAndEditModeLocaleAwareData($data, $previousData, $merge);
+        if ($elementType === 'object') {
+            // Handle locale-aware data using the existing method
+            $newData = $this->mergeStorageAndEditModeLocaleAwareData($data, $previousData, $merge);
+            
+            // Add non-localized fields
+            if (isset($data['og:type'])) {
+                $newData['og:type'] = $data['og:type'];
+            }
+            if (isset($data['og:image'])) {
+                $newData['og:image'] = $data['og:image'];
+            }
+
+            // Return null if all fields are empty
+            if (empty($newData)) {
+                return null;
+            }
+
+            return $newData;
+        } else {
+            $arrayModifier = new ArrayHelper();
+            $newData = $arrayModifier->mergeNonLocaleAwareArrays($data, $previousData, 'property', $merge);
         }
 
-        if (count($data) === 0){
+        if (is_array($newData) && count($newData) === 0) {
             return null;
         }
 
-        return $data;
+        return $newData;
     }
 
     protected function mergeStorageAndEditModeLocaleAwareData(array $data, ?array $previousData, bool $mergeWithPrevious = false): array

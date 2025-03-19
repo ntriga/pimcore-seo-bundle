@@ -48,7 +48,7 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
         try {
             return $this->urlGenerator->generate($element , $locale !== null ? ['_locale' => $locale] : []);
         } catch (\Exception){
-            return null;
+            return '';
         }
     }
 
@@ -59,7 +59,7 @@ class CanonicalIntegrator extends AbstractIntegrator implements IntegratorInterf
 
     public function updateMetaData(mixed $element, array $data, ?string $locale, SeoMetaDataInterface $seoMetaData): void
     {
-        $defaultUrl = $this->getDefaultCanonical($element);
+        $defaultUrl = $this->getDefaultCanonical($element) ?? '';
 
 
         if (null !== $value = $this->findLocaleAwareData($data['canonical'] ?? null, $locale)){
