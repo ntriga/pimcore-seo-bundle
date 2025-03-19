@@ -31,6 +31,6 @@
     },
     "require": {
         "pimcore/pimcore": "^11.0",
-        "doctrine/orm": "^3"
+        "doctrine/orm": "^2.2|^3.0"
     }
 }
