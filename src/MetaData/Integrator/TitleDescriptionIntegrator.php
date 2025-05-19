@@ -54,9 +54,20 @@ class TitleDescriptionIntegrator extends AbstractIntegrator implements Integrato
 
     public function validateBeforePersist(string $elementType, int $elementId, array $data, ?array $previousData = null, bool $merge = false): ?array
     {
-
         if ($elementType === 'object') {
             $data = $this->mergeStorageAndEditModeLocaleAwareData($data, $previousData, $merge);
+        }
+
+        if (isset($data['title'])) {
+            if (is_array($data['title'])) {
+                foreach ($data['title'] as $locale => $titleString) {
+                    if (is_string($titleString)) {
+                        $data['title'][$locale] = strip_tags($titleString);
+                    }
+                }
+            } elseif (is_string($data['title'])) {
+                $data['title'] = strip_tags($data['title']);
+            }
         }
 
         if (empty($data['title']) && empty($data['description'])) {
@@ -115,5 +126,4 @@ class TitleDescriptionIntegrator extends AbstractIntegrator implements Integrato
     {
         // no options here.
     }
-
 }

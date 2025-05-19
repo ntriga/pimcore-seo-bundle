@@ -11,6 +11,7 @@ use Pimcore\Model\Document;
 use Pimcore\Twig\Extension\Templating\HeadMeta;
 use Pimcore\Twig\Extension\Templating\HeadTitle;
 use Ntriga\PimcoreSeoBundle\MetaData\Extractor\ExtractorInterface;
+
 class MetaDataProvider implements MetaDataProviderInterface
 {
     public function __construct(
@@ -19,15 +20,14 @@ class MetaDataProvider implements MetaDataProviderInterface
         protected UrlGenerator                       $urlGenerator,
         protected MetaDataExtractorRegistryInterface $extractorRegistry,
         protected MiddlewareDispatcherInterface      $middlewareDispatcher
-    )
-    {}
+    ) {}
 
     public function updateSeoElement($element, ?string $locale): void
     {
         $seoMetadata = $this->getSeoMetaData($element, $locale);
 
         $defaultCanonical = $this->generateDefaultCanonical($element);
-        if ($seoMetadata->getCanonicalUrl() !== null || $defaultCanonical !== null){
+        if ($seoMetadata->getCanonicalUrl() !== null || $defaultCanonical !== null) {
             $canonicalUrl = (!empty($seoMetadata->getCanonicalUrl()))
                 ? $seoMetadata->getCanonicalUrl()
                 : $defaultCanonical;
@@ -36,7 +36,7 @@ class MetaDataProvider implements MetaDataProviderInterface
             $this->headMeta->addRaw($canonicalTag);
         }
 
-        if ($seoMetadata->getIndexPage() !== null && $seoMetadata->getIndexPage() === false ){
+        if ($seoMetadata->getIndexPage() !== null && $seoMetadata->getIndexPage() === false) {
             $indexTag = '<meta name="robots" content="noindex">';
             $this->headMeta->addRaw($indexTag);
         }
@@ -75,7 +75,7 @@ class MetaDataProvider implements MetaDataProviderInterface
         }
 
         $title = $seoMetadata->getTitle();
-        if (!$title){
+        if (!$title) {
             $title = $this->generateDefaultTitle($element);
         }
         if ($title) {
@@ -113,7 +113,7 @@ class MetaDataProvider implements MetaDataProviderInterface
 
     protected function generateDefaultCanonical(mixed $element): ?string
     {
-        if ($element instanceof Document || $element instanceof DataObject){
+        if ($element instanceof Document || $element instanceof DataObject) {
             return $this->urlGenerator->generate($element);
         }
 
@@ -122,51 +122,51 @@ class MetaDataProvider implements MetaDataProviderInterface
 
     protected function generateDefaultTitle(mixed $element): ?string
     {
-        if ($element instanceof Document){
+        if ($element instanceof Document) {
             if ($element->hasProperty('navigation_title')) {
                 $title = $element->getProperty('navigation_title');
                 if ($title) {
-                    return $title;
+                    return html_entity_decode(strip_tags($title), ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 }
             }
 
             if ($element->hasProperty('navigation_name')) {
                 $title = $element->getProperty('navigation_name');
                 if ($title) {
-                    return $title;
+                    return html_entity_decode(strip_tags($title), ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 }
             }
 
             if (method_exists($element, 'getKey')) {
                 $title = $element->getKey();
                 if ($title) {
-                    return $title;
+                    return html_entity_decode(strip_tags($title), ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 }
             }
         }
 
-        if ($element instanceof DataObject){
-            if (method_exists($element, 'getTitle')){
+        if ($element instanceof DataObject) {
+            if (method_exists($element, 'getTitle')) {
                 $title = $element->getTitle();
 
                 if ($title) {
-                    return $title;
+                    return html_entity_decode(strip_tags($title), ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 }
             }
 
-            if (method_exists($element, 'getName')){
+            if (method_exists($element, 'getName')) {
                 $title = $element->getName();
 
                 if ($title) {
-                    return $title;
+                    return html_entity_decode(strip_tags($title), ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 }
             }
 
-            if (method_exists($element, 'getKey')){
+            if (method_exists($element, 'getKey')) {
                 $title = $element->getKey();
 
                 if ($title) {
-                    return $title;
+                    return html_entity_decode(strip_tags($title), ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 }
             }
         }
