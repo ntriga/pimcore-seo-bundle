@@ -45,7 +45,7 @@ class NtrigaPimcoreSeoExtension extends Extension
         $container->setParameter('seo.meta_data_provider.configuration', $config['meta_data_configuration']['meta_data_provider']);
         $container->setParameter('seo.meta_data_integrator.configuration', $config['meta_data_configuration']['meta_data_integrator']);
         $container->setParameter('seo.index.pimcore_element_watcher.enabled', $config['index_provider_configuration']['pimcore_element_watcher']['enabled']);
-
+        $container->setParameter('seo.pretty_url.auto_generate', $config['pretty_url']['auto_generate']);
     }
 
     /**
@@ -59,11 +59,11 @@ class NtrigaPimcoreSeoExtension extends Extension
 
         $pimcoreSeoBundleEnabled = $container->hasExtension('pimcore_seo');
 
-        if ($pimcoreSeoBundleEnabled){
+        if ($pimcoreSeoBundleEnabled) {
             $enabledThirdPartyConfigs['pimcore_seo'] = 'services/third_party/pimcore_seo.yaml';
         }
 
-        foreach ($enabledThirdPartyConfigs as $enabledThirdPartyConfig){
+        foreach ($enabledThirdPartyConfigs as $enabledThirdPartyConfig) {
             $loader->load($enabledThirdPartyConfig);
         }
 

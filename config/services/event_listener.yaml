@@ -14,12 +14,19 @@ services:
 
     Ntriga\PimcoreSeoBundle\EventListener\AutoMetaDataAttachListener:
         arguments:
-            $configuration: '%seo.meta_data_provider.configuration%'
+            $configuration: "%seo.meta_data_provider.configuration%"
         tags:
             - { name: kernel.event_subscriber }
 
     Ntriga\PimcoreSeoBundle\EventListener\PimcoreElementListener:
         arguments:
-            $enabled: '%seo.index.pimcore_element_watcher.enabled%'
+            $enabled: "%seo.index.pimcore_element_watcher.enabled%"
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Ntriga\PimcoreSeoBundle\EventListener\PrettyUrlListener:
+        arguments:
+            $enabled: "%seo.pretty_url.auto_generate%"
+            $slugger: "@slugger"
         tags:
             - { name: kernel.event_subscriber }
