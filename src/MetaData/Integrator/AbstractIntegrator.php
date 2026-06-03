@@ -11,6 +11,7 @@ abstract class AbstractIntegrator
         ?string $requestedLocale,
         string $returnType = 'scalar'
     ): mixed {
+        $requestedLocale = $this->normalizeLocale($requestedLocale);
 
         if ($requestedLocale === null) {
             return null;
@@ -23,12 +24,29 @@ abstract class AbstractIntegrator
         }
 
         foreach (Tool::getFallbackLanguagesFor($requestedLocale) as $fallBackLocale) {
+            $fallBackLocale = $this->normalizeLocale($fallBackLocale);
+
+            if ($fallBackLocale === null) {
+                continue;
+            }
+
             if (null !== $fallBackValue = $this->findData($data, $fallBackLocale, $returnType)) {
                 return $fallBackValue;
             }
         }
 
         return null;
+    }
+
+    protected function normalizeLocale(mixed $locale): ?string
+    {
+        if (!is_string($locale)) {
+            return null;
+        }
+
+        $locale = str_replace('-', '_', trim($locale));
+
+        return $locale !== '' ? $locale : null;
     }
 
     protected function findData(mixed $data, string $locale, string $returnType = 'scalar'): mixed
